@@ -97,7 +97,7 @@ td {
     background-size: cover;
 }
 .wall {
-    background-color: rgb(13, 13, 39);
+    background-color: rgb(13, 13, 219);
     animation-name: wallAnimation;
     animation-duration: 0.5s;
 }
