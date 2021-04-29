@@ -1,5 +1,5 @@
 import React from 'react';
-import { dijkstra,boxes } from '../../algorithms/dijkstras';
+import { dijkstra,boxes, walls } from '../../algorithms/dijkstras';
 
 export const Nav = () => {
     const handleClick = async () => {
@@ -21,6 +21,7 @@ export const Nav = () => {
         for( let box of boxes) {
             const el = document.getElementById(box);
             if (el.className === 'visited' || el.className === 'path' || el.className === 'wall') el.className = 'unvisited'
+            if (walls.includes(box)) walls.splice(walls.indexOf(box),1);
         }
     }
     return (
