@@ -15,6 +15,21 @@ html, body, main {
     color: white;
     margin: 0 10px;
 }
+.clear-button {
+    color: white;
+}
+.clear-button button:focus {
+    outline: none;
+    box-shadow: none;
+}
+.clear-button button {
+    background-color: white;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
 .algo-button button:focus {
     outline: none;
     box-shadow: none;
