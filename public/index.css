@@ -6,9 +6,42 @@ html, body, main {
 .nav {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     width: 100%;
     height: 50px;
     background-color: rgb(18, 40, 48);
+}
+.nav-title {
+    color: white;
+    margin: 0 10px;
+}
+.clear-button {
+    color: white;
+}
+.clear-button button:focus {
+    outline: none;
+    box-shadow: none;
+}
+.clear-button button {
+    background-color: white;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+.algo-button button:focus {
+    outline: none;
+    box-shadow: none;
+}
+.algo-button button {
+    color: white;
+    background-color: rgb(61, 156, 112);
+    margin: 5px;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
 }
 .grid-container {
     display: flex;
@@ -97,7 +130,7 @@ td {
     background-size: cover;
 }
 .wall {
-    background-color: rgb(13, 13, 219);
+    background-color: rgb(13, 13, 39);
     animation-name: wallAnimation;
     animation-duration: 0.5s;
 }

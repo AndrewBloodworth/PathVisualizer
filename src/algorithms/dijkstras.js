@@ -9,6 +9,8 @@ const lowestCostNode = (costs, processed) => {
 
 export const graph = {}
 export const walls = [];
+export let completed = false;
+export const boxes = []
 
 export const buildGraph = (start,cName) => {
     let index = start.indexOf('-');
@@ -18,14 +20,8 @@ export const buildGraph = (start,cName) => {
     let left = col-1 < 0 ? null : `${row}-${col-1}`;
     let up = row+1 > graph.rows-1 ? null : `${row+1}-${col}`;
     let down = row-1 < 0 ? null : `${row-1}-${col}`;
-    if (cName !== 'wall') {
-        graph[start] = {
-            [right]: 1,
-            [left]: 1,
-            [up]: 1,
-            [down]: 1
-        };
-    }
+    if (cName !== 'wall') graph[start] = { [right]: 1, [left]: 1, [up]: 1, [down]: 1 };
+    boxes.push(start);
 }
 
 export const dijkstra = async () => {
@@ -82,6 +78,6 @@ export const dijkstra = async () => {
     distance: costs[graph.endNode],
     path: optimalPath
     };
-
+    completed = true;
     return results;
 }
