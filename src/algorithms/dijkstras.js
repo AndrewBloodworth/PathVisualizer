@@ -10,17 +10,19 @@ const lowestCostNode = (costs, processed) => {
   };
 
 export const dijkstra = async () => {
-    const { walls, graph, start, end } = store.getState().board.board;
+    const board = store.getState().board.board;
+    const { walls, graph, start, end } = board;
     const costs = Object.assign({end: Infinity}, graph[start]);
     const parents = {end: null};
     const processed = [];
-    for (let wall of walls) if (costs[wall]) delete graph[wall]
+    for (let wall of walls) if (costs[wall]) delete graph[wall];
     for (let child in graph[start]) parents[child] = graph[start];
 
     let node = lowestCostNode(costs, processed);
 
     const myPromise = new Promise((resolve, reject) => {
-        let interval = setInterval(() => {
+        let visitedNodes = [];
+        while (true) {
             let cost = costs[node];
             let children = graph[node];
             for (let n in children) {
@@ -37,18 +39,39 @@ export const dijkstra = async () => {
                 }
             }
             const el = document.getElementById(node);
-            if (el && el.className !== 'start-node' && el.className !== 'end-node' && !walls.includes(node)) el.className = 'visited';
-            if (node === end) {
-                clearInterval(interval);
-                resolve()
-            }
+            if (el && el.className !== 'start-node' && el.className !== 'end-node' && !walls.includes(node)) visitedNodes.push(node);
+            if (node === end) break;
             processed.push(node);
             node = lowestCostNode(costs, processed);
-            if (!node) clearInterval(interval);
-        }, 10)
+        }
+
+        if (board.solved) {
+            for (let v of visitedNodes) {
+                const el = document.getElementById(v);
+                el.className = 'visited-immediate';
+                board.grid[v].state = 'visited-immediate';
+            }
+            resolve();
+        } else {
+            let i = 0;
+            let interval = setInterval(() => {
+                const el = document.getElementById(visitedNodes[i]);
+                el.className = 'visited';
+                board.grid[visitedNodes[i]].state = 'visited';
+                i++
+                if (!visitedNodes[i]) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, 10)
+        }
+
     });
+
+    await myPromise;
+
     
-    await myPromise
+
 
     let optimalPath = [end];
     let parent = parents[end];
@@ -64,5 +87,7 @@ export const dijkstra = async () => {
     distance: costs[end],
     path: optimalPath
     };
+    results.path.shift();
+    results.path.pop();
     return results;
 }

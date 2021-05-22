@@ -17,7 +17,21 @@ export const Grid = () => {
         const horzLastThird = cols - Math.floor(cols / 6);
         let start = `${vertMiddle}-${horzFirstThird}`;
         let end = `${vertMiddle}-${horzLastThird}`;
-        dispatch(setBoard(new Board(start,end,cols,rows)))
+        let myGrid = {};
+        for(let i = 0; i < cols; i++) {
+            for( let j = 0; j < rows; j++) {
+                let id = `${j}-${i}`;
+                if (id === start) {
+                    myGrid[id] = {items: ['start-node'], state: 'unvisited'}
+                } else if (id === end) {
+                    myGrid[id] = {items: ['end-node'], state: 'unvisited'}
+                } else {
+                    myGrid[id] = {items: [], state: 'unvisited'}
+                }
+            }
+        }
+        console.log('grid construct')
+        dispatch(setBoard(new Board(start,end,cols,rows,myGrid)))
     },[dispatch])
     const handleMouseLeave = (e) => {
         setNode({...node, currentlyMoving: false});

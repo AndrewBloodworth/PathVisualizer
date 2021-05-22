@@ -135,8 +135,8 @@ td {
     animation-duration: 0.5s;
 }
 .path {
-    background-color: rgb(245, 255, 157);
-    border-color: rgb(245, 255, 157);
+    background-color: rgb(238, 228, 91);
+    border-color: rgb(238, 228, 91);
     animation-name: wallAnimation;
     animation-duration: 0.5s;
 }
@@ -144,4 +144,11 @@ td {
     background-color: rgba(0, 190, 218, 0.75);
     animation-name: visitedStartNodeBlueAnimation;
     animation-duration: 1s;
+}
+.visited-immediate {
+    background-color: rgba(0, 190, 218, 0.75);
+}
+.path-immediate {
+    background-color: rgb(238, 228, 91);
+    border-color: rgb(238, 228, 91);
 }

@@ -1,0 +1,8 @@
+class Algo {
+    constructor() {
+        
+    }
+    dijkstras() {
+        
+    }
+}
