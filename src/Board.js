@@ -18,45 +18,24 @@ export class Board {
             return true;
         }
     }
-    addToGrid(id) {
-        if (id === this.start) {
-            this.grid[id] = 'start-node';
-            return 'start-node'
-        } else if (id === this.end) {
-            this.grid[id] = 'end-node';
-            return 'end-node'
-        } else if (this.walls.includes(id)) {
-            this.grid[id] = 'wall';
-            return 'wall'
-        } else {
-            this.grid[id] = 'unvisited';
-            return 'unvisited'
-        }
-    }
     addRemoveWall(target) {
         if (target.className === 'unvisited') {
             this.walls.push(target.id);
             target.className = 'wall';
-            //this.grid[target.id] = 'wall'
             this.grid[target.id].state = 'wall';
         } else if (target.className === 'wall') {
             this.walls.splice(this.walls.indexOf(target.id),1);
             target.className = 'unvisited';
-            //this.grid[target.id] = 'unvisited'
             this.grid[target.id].state = 'unvisited';
         }
     }
     placeNode(name, id) {
         if (name === 'start-node') {
-            //this.grid[this.start] = 'unvisited';
             this.grid[this.start].items.shift();
-            //this.grid[id] = 'start-node';
             this.grid[id].items.unshift('start-node');
             this.start = id;
         } else if (name === 'end-node') {
-            //this.grid[this.end] = 'unvisited';
             this.grid[this.end].items.shift();
-            //this.grid[id] = 'end-node';
             this.grid[id].items.unshift('end-node');
             this.end = id;
         }
@@ -71,7 +50,6 @@ export class Board {
         let down = row-1 < 0 ? null : `${row-1}-${col}`;
         this.graph[start] = { [right]: 1, [left]: 1, [up]: 1, [down]: 1 };
     }
-
     async runDijkstra() {
         this.clearBoard(false)
         let result = await dijkstra();
@@ -95,7 +73,6 @@ export class Board {
             if (el.className === 'visited' || el.className === 'path' ||
                 el.className === 'visited-immediate' || el.className === 'path-immediate') {
                 el.className = 'unvisited';
-                //this.grid[box] = 'unvisited';
                 this.grid[box].state = 'unvisited';
             }
             if (this.walls.includes(box) && clearWalls) {
@@ -105,5 +82,4 @@ export class Board {
             }
         }
     }
-
 }

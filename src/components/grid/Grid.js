@@ -30,7 +30,6 @@ export const Grid = () => {
                 }
             }
         }
-        console.log('grid construct')
         dispatch(setBoard(new Board(start,end,cols,rows,myGrid)))
     },[dispatch])
     const handleMouseLeave = (e) => {

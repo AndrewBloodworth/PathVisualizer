@@ -5,7 +5,7 @@ import { selectBoard } from './boardSlice';
 export const Gridrow = ({ mouseDown, setMouseDown, node, setNode, currentRow }) => {
     const { board } = useSelector(selectBoard);
     const handleMouseDown = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         if (board.isNode(e.target.id)) setNode({currentlyMoving: true, type: e.target.className});
         setMouseDown(true);
         board.addRemoveWall(e.target);
