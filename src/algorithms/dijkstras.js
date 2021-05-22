@@ -1,3 +1,5 @@
+import { store } from '../app/store';
+
 const lowestCostNode = (costs, processed) => {
     return Object.keys(costs).reduce((lowest, node) => {
         if (lowest === null || costs[node] < costs[lowest]) {
@@ -7,29 +9,13 @@ const lowestCostNode = (costs, processed) => {
     }, null);
   };
 
-export const graph = {}
-export const walls = [];
-export let completed = false;
-export const boxes = []
-
-export const buildGraph = (start,cName) => {
-    let index = start.indexOf('-');
-    let row = Number(start.slice(0,index))
-    let col = Number(start.slice(index+1,start.length))
-    let right = col+1 > graph.cols-1 ? null : `${row}-${col+1}`;
-    let left = col-1 < 0 ? null : `${row}-${col-1}`;
-    let up = row+1 > graph.rows-1 ? null : `${row+1}-${col}`;
-    let down = row-1 < 0 ? null : `${row-1}-${col}`;
-    if (cName !== 'wall') graph[start] = { [right]: 1, [left]: 1, [up]: 1, [down]: 1 };
-    boxes.push(start);
-}
-
 export const dijkstra = async () => {
-    const costs = Object.assign({end: Infinity}, graph[graph.startNode]);
+    const { walls, graph, start, end } = store.getState().board.board;
+    const costs = Object.assign({end: Infinity}, graph[start]);
     const parents = {end: null};
     const processed = [];
     for (let wall of walls) if (costs[wall]) delete graph[wall]
-    for (let child in graph[graph.startNode]) parents[child] = graph[graph.startNode];
+    for (let child in graph[start]) parents[child] = graph[start];
 
     let node = lowestCostNode(costs, processed);
 
@@ -52,7 +38,7 @@ export const dijkstra = async () => {
             }
             const el = document.getElementById(node);
             if (el && el.className !== 'start-node' && el.className !== 'end-node' && !walls.includes(node)) el.className = 'visited';
-            if (node === graph.endNode) {
+            if (node === end) {
                 clearInterval(interval);
                 resolve()
             }
@@ -64,8 +50,8 @@ export const dijkstra = async () => {
     
     await myPromise
 
-    let optimalPath = [graph.endNode];
-    let parent = parents[graph.endNode];
+    let optimalPath = [end];
+    let parent = parents[end];
 
     while (parent) {
         optimalPath.push(parent);
@@ -75,9 +61,8 @@ export const dijkstra = async () => {
     optimalPath.reverse();
 
     const results = {
-    distance: costs[graph.endNode],
+    distance: costs[end],
     path: optimalPath
     };
-    completed = true;
     return results;
 }

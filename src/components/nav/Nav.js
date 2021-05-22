@@ -1,9 +1,12 @@
 import React from 'react';
-import { dijkstra,boxes, walls } from '../../algorithms/dijkstras';
+import { dijkstra } from '../../algorithms/dijkstras';
+import { useSelector } from 'react-redux';
+import { selectBoard } from '../grid/boardSlice'
 
 export const Nav = () => {
+    const { board } = useSelector(selectBoard);
     const handleClick = async () => {
-        for( let box of boxes) {
+        for( let box of Object.keys(board.grid)) {
             const el = document.getElementById(box);
             if (el.className === 'visited' || el.className === 'path') el.className = 'unvisited'
         }
@@ -18,10 +21,10 @@ export const Nav = () => {
         },1)
     }
     const handleClear = () => {
-        for( let box of boxes) {
+        for( let box of Object.keys(board.grid)) {
             const el = document.getElementById(box);
             if (el.className === 'visited' || el.className === 'path' || el.className === 'wall') el.className = 'unvisited'
-            if (walls.includes(box)) walls.splice(walls.indexOf(box),1);
+            if (board.walls.includes(box)) board.walls.splice(board.walls.indexOf(box),1);
         }
     }
     return (

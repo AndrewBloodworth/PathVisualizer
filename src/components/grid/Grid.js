@@ -1,33 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setGrid, selectGrid } from './gridSlice'
+import { setBoard, selectBoard } from './boardSlice'
 import { Gridrow } from './Gridrow';
-import { graph} from '../../algorithms/dijkstras';
+import { Board } from '../../Board';
 
 export const Grid = () => {
-    const { grid } = useSelector(selectGrid);
+    const { board } = useSelector(selectBoard);
     const dispatch = useDispatch();
     const [mouseDown, setMouseDown] = useState(false);
     const [node, setNode] = useState({target: null, bool: false});
-
     useEffect(() => {
         let rows = Math.floor((window.innerHeight - 25) / 28);
         let cols = Math.floor(window.innerWidth / 25)-6;
-        graph.rows = rows;
-        graph.cols = cols;
         const vertMiddle = Math.floor(rows / 2);
         const horzFirstThird = Math.floor(cols / 6);
         const horzLastThird = cols - Math.floor(cols / 6);
-        graph.startNode = `${vertMiddle}-${horzFirstThird}`;
-        graph.endNode = `${vertMiddle}-${horzLastThird}`;
-        dispatch(setGrid({rows,cols}))
+        let start = `${vertMiddle}-${horzFirstThird}`;
+        let end = `${vertMiddle}-${horzLastThird}`;
+        dispatch(setBoard(new Board(start,end,cols,rows)))
     },[dispatch])
     const handleMouseLeave = (e) => {
-        setNode({...node, currentlyMoving: false, bool: false});
+        setNode({...node, currentlyMoving: false});
         setMouseDown(false);
     }
     const getRows = () => {
-        return [...Array(grid.rows).keys()].map(row => <tr key={row} id={`row-${row}`}>
+        return [...Array(board.height).keys()].map(row => <tr key={row} id={`row-${row}`}>
             <Gridrow key={row} 
                     currentRow={row}  
                     mouseDown={mouseDown} 

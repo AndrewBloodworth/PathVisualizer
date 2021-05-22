@@ -1,17 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const gridSlice = createSlice({
-    name: 'grid',
+const boardSlice = createSlice({
+    name: 'board',
     initialState: {
-        grid: {
-            rows: null,
-            cols: null
-        }
+        board: {}
     },
     reducers: {
-        setGrid(state,action) {
+        setBoard(state,action) {
             return {
-                grid: action.payload
+                board: action.payload
             }
         }
     }
@@ -19,12 +16,12 @@ const gridSlice = createSlice({
 
 //Actions
 /////////////////////////////////////////////////////////////
-export const { setGrid } = gridSlice.actions;
+export const { setBoard } = boardSlice.actions;
 
 //Reducer
 /////////////////////////////////////////////////////////////
-export default gridSlice.reducer;
+export default boardSlice.reducer;
 
 //Selectors
 /////////////////////////////////////////////////////////////
-export const selectGrid = (state) => state.grid;
+export const selectBoard = (state) => state.board;
