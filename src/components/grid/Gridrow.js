@@ -21,21 +21,19 @@ export const Gridrow = ({ mouseDown, setMouseDown, node, setNode, currentRow }) 
             setNode({...node});
         } else if (mouseDown) board.addRemoveWall(target);
     }
-    const getCols = () => {
-        return [...Array(board.width).keys()].map(col => {
-            let cName;
-            if (Object.keys(board).length) {
-                let id = `${currentRow}-${col}`;
-                cName = board.grid[id].items.length > 0 ? board.grid[id].items[0] : board.grid[id].state;
-                board.buildGraph(id);
-            }
-            return <td key={col} 
-                        id={`${currentRow}-${col}`} 
-                        className={cName} 
-                        onMouseEnter={handleMouseEnter} 
-                        onMouseDown={handleMouseDown} 
-                        onMouseUp={handleMouseUp}></td>
-        })
-    }
-    return getCols();
+
+    return [...Array(board.width).keys()].map(col => {
+        let cName;
+        if (Object.keys(board).length) {
+            let id = `${currentRow}-${col}`;
+            cName = board.grid[id].items.length > 0 ? board.grid[id].items[0] : board.grid[id].state;
+            board.buildGraph(id);
+        }
+        return <td key={col} 
+                    id={`${currentRow}-${col}`} 
+                    className={cName} 
+                    onMouseEnter={handleMouseEnter} 
+                    onMouseDown={handleMouseDown} 
+                    onMouseUp={handleMouseUp}></td>
+    });
 }
