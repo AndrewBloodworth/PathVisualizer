@@ -11,14 +11,15 @@ const lowestCostNode = (costs, processed) => {
 
 export const dijkstra = async () => {
   const board = store.getState().board.board;
-  console.log("d", board);
 
-  const { walls, graph, start, end } = board;
-  const costs = Object.assign({ end: Infinity }, graph[start]);
+  const { walls, grid, start, end } = board;
+  const costs = Object.assign({ end: Infinity }, grid[start].neighbors);
   const parents = { end: null };
   const processed = [];
-  for (let wall of walls) if (costs[wall]) delete graph[wall];
-  for (let child in graph[start]) parents[child] = graph[start];
+  for (let wall of walls) if (costs[wall]) delete grid[wall].neighbors;
+  for (let child in grid[start].neighbors) {
+    parents[child] = start;
+  }
 
   let node = lowestCostNode(costs, processed);
 
@@ -26,7 +27,13 @@ export const dijkstra = async () => {
     let visitedNodes = [];
     while (true) {
       let cost = costs[node];
-      let children = graph[node];
+
+      let children;
+      if (grid[node]) {
+        children = grid[node].neighbors;
+      } else {
+        children = {};
+      }
       for (let n in children) {
         if (!walls.includes(n)) {
           let newCost = cost + children[n];
@@ -48,7 +55,9 @@ export const dijkstra = async () => {
         !walls.includes(node)
       )
         visitedNodes.push(node);
-      if (node === end) break;
+      if (node === end) {
+        break;
+      }
       processed.push(node);
       node = lowestCostNode(costs, processed);
     }
@@ -79,6 +88,7 @@ export const dijkstra = async () => {
 
   let optimalPath = [end];
   let parent = parents[end];
+  delete parents[start];
 
   while (parent) {
     optimalPath.push(parent);

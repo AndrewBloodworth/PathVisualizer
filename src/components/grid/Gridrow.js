@@ -14,7 +14,6 @@ export const Gridrow = ({
     e.preventDefault();
     if (board.isNode(e.target.id))
       setNode({ currentlyMoving: true, type: e.target.className });
-
     board.addRemoveWall(e.target);
     setMouseDown(true);
   };

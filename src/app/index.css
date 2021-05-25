@@ -1,3 +1,7 @@
+:root {
+  --size: 50px;
+}
+
 html,
 body,
 main {
@@ -66,8 +70,8 @@ main {
 
 td {
   border: 1px solid lightblue;
-  height: 25px;
-  width: 25px;
+  height: var(--size);
+  width: var(--size);
 }
 
 @keyframes visitedStartNodeBlueAnimation {
@@ -122,13 +126,15 @@ td {
   background-image: url("./Images/arrow-icon--myiconfinder-23.png");
 
   background-size: contain;
-  /*
-    animation-name: nodeAnimation;
-    animation-duration: 0.5s;*/
+
+  animation-name: nodeAnimation;
+  animation-duration: 0.5s;
 }
 .end-node {
   background-image: url("./Images/149-1491115_transparent-target-symbol-png-target-icon-transparent-background.png");
   background-size: cover;
+  animation-name: nodeAnimation;
+  animation-duration: 0.5s;
 }
 .wall {
   background-color: rgb(13, 13, 39);
