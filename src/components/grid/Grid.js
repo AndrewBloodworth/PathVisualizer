@@ -29,15 +29,20 @@ export const Grid = ({ slider, setSlider }) => {
     );
   }
   const getRows = () => {
-    return [...Array(board.height).keys()].map((row) => (
+    //Slider
+    const dimensions = board.getDimensions(slider);
+    let round = Math.floor((board.height - dimensions.innerHeight) / 2);
+    return [...Array(dimensions.innerHeight).keys()].map((row) => (
       <tr key={row} id={`row-${row}`}>
         <Gridrow
           key={row}
-          currentRow={row}
+          currentRow={row + round}
           mouseDown={mouseDown}
           setMouseDown={setMouseDown}
           node={node}
           setNode={setNode}
+          slider={slider}
+          setSlider={setSlider}
         />
       </tr>
     ));

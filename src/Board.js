@@ -21,10 +21,11 @@ export class Board {
     this.grid = {};
     this.graph = {};
     this.solved = false;
+    this.speed = 10;
   }
   manufactureGrid(slider) {
     //TODO more elegant way of rotating start
-    //document.getElementById(this.start).style = "";
+    document.getElementById(this.start).style = "";
 
     /*
     for (let wall of this.walls) {
@@ -34,36 +35,50 @@ export class Board {
     this.solved = false;
     */
     //this.manufactureGraph(slider);
+    //console.log(this.graph);
+    this.graph = {};
     const gridSizer = this.assignGridOfSize(slider);
     gridSizer();
   }
-  assignGridOfSize(numberOfRows = 20) {
+  assignGridOfSize(numberOfRows) {
+    const dimensions = this.getDimensions(numberOfRows);
+    //Makes nodes not clickable
+    //this.assignNodes(dimensions.innerWidth, dimensions.innerHeight);
+    return () => {
+      const cssRoot = document.querySelector(":root");
+      cssRoot.style.setProperty("--size", `${dimensions.verticalPixelCount}px`);
+    };
+  }
+  getDimensions(numberOfRows) {
     const navHeight = 50;
     const boarderPixelCount = 3;
     const conceptualPixelCount =
       (window.innerHeight - navHeight) / numberOfRows;
     const verticalPixelCount = conceptualPixelCount - boarderPixelCount;
     const numberOfColumns = window.innerWidth / conceptualPixelCount;
+    const innerHeight = Number(numberOfRows);
+    const innerWidth = Math.floor(numberOfColumns) - 1;
 
-    this.height = Number(numberOfRows);
-    this.width = Math.floor(numberOfColumns) - 1;
-
-    return () => {
-      const cssRoot = document.querySelector(":root");
-      cssRoot.style.setProperty("--size", `${verticalPixelCount}px`);
+    return {
+      verticalPixelCount,
+      innerHeight,
+      innerWidth,
     };
   }
-  assignNodes() {
-    const vertMiddle = Math.floor(this.height / 2);
-    const horzFirstThird = Math.floor(this.width / 6);
-    const horzLastThird = this.width - Math.floor(this.width / 6);
+  assignNodes(width, height) {
+    const vertMiddle = Math.floor(height / 2) - 1;
+    const horzFirstThird = Math.floor(width / 2) - 3;
+    const horzLastThird = width - Math.floor(width / 2) + 1;
 
     this.start = `${vertMiddle}-${horzFirstThird}`;
     this.end = `${vertMiddle}-${horzLastThird}`;
   }
   manufactureGraph() {
-    this.assignGridOfSize();
-    this.assignNodes();
+    const dimensions = this.getDimensions(20);
+    this.height = dimensions.innerHeight;
+    this.width = dimensions.innerWidth;
+    console.log("here");
+    this.assignNodes(this.width, this.height);
 
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
@@ -95,7 +110,14 @@ export class Board {
     }
   }
   addRemoveWall(target) {
-    if (target.className === "unvisited") {
+    let classname = target.className;
+    if (
+      classname === "unvisited" ||
+      classname === "visited" ||
+      classname === "path" ||
+      classname === "visited-immediate" ||
+      classname === "path-immediate"
+    ) {
       this.walls.push(target.id);
       target.className = "wall";
       this.grid[target.id].state = "wall";
@@ -171,7 +193,7 @@ export class Board {
     }
   }
   clearBoard(clearWalls) {
-    for (let box in this.grid) {
+    for (let box in this.graph) {
       const el = document.getElementById(box);
       if (
         el.className === "visited" ||

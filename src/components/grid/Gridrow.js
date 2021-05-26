@@ -8,10 +8,13 @@ export const Gridrow = ({
   node,
   setNode,
   currentRow,
+  slider,
+  setSlider,
 }) => {
   const { board } = useSelector(selectBoard);
   const handleMouseDown = (e) => {
     e.preventDefault();
+    console.log(board.isNode(e.target.id));
     if (board.isNode(e.target.id))
       setNode({ currentlyMoving: true, type: e.target.className });
     board.addRemoveWall(e.target);
@@ -24,12 +27,18 @@ export const Gridrow = ({
   const handleMouseEnter = ({ target }) => {
     if (node.currentlyMoving) {
       board.placeNode(node.type, target.id);
-      if (board.solved) board.runDijkstra();
+      if (board.solved) board.runDijkstra(0);
       setNode({ ...node });
     } else if (mouseDown) board.addRemoveWall(target);
   };
-  return [...Array(board.width).keys()].map((col) => {
-    let id = `${currentRow}-${col}`;
+
+  //Slider
+  const dimensions = board.getDimensions(slider);
+  let round = Math.floor((board.width - dimensions.innerWidth) / 2);
+  return [...Array(dimensions.innerWidth).keys()].map((col) => {
+    //debugger;
+    let id = `${currentRow}-${col + round}`;
+    board.graph[id] = board.grid[id];
     let cName =
       board.grid[id].items.length > 0
         ? board.grid[id].items[0]
