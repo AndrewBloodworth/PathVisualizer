@@ -13,9 +13,16 @@ export const Nav = ({ slider, setSlider }) => {
     board.clearBoard(true);
   };
   const handleChange = (e) => {
+    let body = document.getElementsByTagName("body")[0];
+    body.className = "notransition";
     board.manufactureGrid(e.target.value);
     setSlider(e.target.value);
   };
+  const handleMouseUp = () => {
+    let body = document.getElementsByTagName("body")[0];
+    body.className = "";
+  };
+
   return (
     <div className="nav">
       <div className="nav-title">
@@ -31,6 +38,7 @@ export const Nav = ({ slider, setSlider }) => {
         <label for="slider">{slider} rows</label>
         <input
           onChange={handleChange}
+          onMouseUp={handleMouseUp}
           type="range"
           value={slider}
           id="slider"

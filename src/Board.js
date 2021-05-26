@@ -23,31 +23,55 @@ export class Board {
     this.solved = false;
   }
   manufactureGrid(slider) {
+    //TODO more elegant way of rotating start
+    //document.getElementById(this.start).style = "";
+
+    /*
+    for (let wall of this.walls) {
+      this.grid[wall].state = "unvisited";
+    }
     this.walls = [];
     this.solved = false;
-    this.manufactureGraph(slider);
+    */
+    //this.manufactureGraph(slider);
+    const gridSizer = this.assignGridOfSize(slider);
+    gridSizer();
   }
-  manufactureGraph(n = 5) {
-    let size = (window.innerHeight - 50) / n - 3;
-    let m = window.innerWidth / ((window.innerHeight - 50) / n);
-    this.height = Number(n);
-    this.width = Math.floor(m) - 1;
-    let r = document.querySelector(":root");
-    r.style.setProperty("--size", `${size}px`);
+  assignGridOfSize(numberOfRows = 20) {
+    const navHeight = 50;
+    const boarderPixelCount = 3;
+    const conceptualPixelCount =
+      (window.innerHeight - navHeight) / numberOfRows;
+    const verticalPixelCount = conceptualPixelCount - boarderPixelCount;
+    const numberOfColumns = window.innerWidth / conceptualPixelCount;
+
+    this.height = Number(numberOfRows);
+    this.width = Math.floor(numberOfColumns) - 1;
+
+    return () => {
+      const cssRoot = document.querySelector(":root");
+      cssRoot.style.setProperty("--size", `${verticalPixelCount}px`);
+    };
+  }
+  assignNodes() {
     const vertMiddle = Math.floor(this.height / 2);
     const horzFirstThird = Math.floor(this.width / 6);
     const horzLastThird = this.width - Math.floor(this.width / 6);
+
     this.start = `${vertMiddle}-${horzFirstThird}`;
     this.end = `${vertMiddle}-${horzLastThird}`;
-    let temp = {};
+  }
+  manufactureGraph() {
+    this.assignGridOfSize();
+    this.assignNodes();
+
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
-        let id = `${i}-${j}`;
-        let neighbors = this.findNeighbors(i, j);
-        temp[id] = new Node(neighbors, this.nodetype(id));
+        const id = `${i}-${j}`;
+        const neighbors = this.findNeighbors(i, j);
+        this.grid[id] = new Node(neighbors, this.nodetype(id));
       }
     }
-    this.grid = temp;
   }
   findNeighbors(i, j) {
     let right = j + 1 > this.width - 1 ? null : `${i}-${j + 1}`;
@@ -83,7 +107,11 @@ export class Board {
   }
   placeNode(name, id) {
     if (name === "start-node") {
-      console.log(this.grid);
+      //TODO more elegant way of rotating start
+      let el = document.getElementById(this.start);
+      if (el.style.transform) {
+        el.style = "";
+      }
       this.grid[this.start].items.shift();
       this.grid[id].items.unshift("start-node");
       this.start = id;
@@ -93,11 +121,38 @@ export class Board {
       this.end = id;
     }
   }
+
   async runDijkstra() {
     this.clearBoard(false);
     let result = await dijkstra();
     let i = 0,
       length = result.path.length;
+
+    //TODO more elegant way of rotating start
+    if (result.path[0]) {
+      //start-node
+      let st = document.getElementById(this.start);
+      //2nd node in shortest path as x and y coordinates
+      let [x, y] = result.path[0].split("-");
+      //The Start of the Board as x and y coordinates
+      let [xs, ys] = this.start.split("-");
+      //Left
+      if (Number(ys) - 1 === Number(y)) {
+        st.style.transform = "rotate(180deg)";
+      }
+      //Right
+      else if (Number(ys) + 1 === Number(y)) {
+      }
+      //Down
+      else if (Number(xs) - 1 === Number(x)) {
+        st.style.transform = "rotate(-90deg)";
+      }
+      //Up
+      else if (Number(xs) + 1 === Number(x)) {
+        st.style.transform = "rotate(90deg)";
+      }
+    }
+
     if (this.solved) {
       for (let i = 0; i < result.path.length; i++) {
         this.grid[result.path[i]].state = "path-immediate";

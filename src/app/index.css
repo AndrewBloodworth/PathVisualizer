@@ -62,7 +62,7 @@ main {
   height: 100%;
 }
 .loader h3 {
-  font-size: 40px;
+  font-size: 100px;
   height: 100px;
 }
 
@@ -139,6 +139,7 @@ td {
     transform: scale(1);
   }
 }
+
 .start-node {
   background-image: url("./Images/arrow-icon--myiconfinder-23.png");
 
@@ -159,6 +160,13 @@ td {
   100% {
     transform: scale(1);
   }
+}
+.notransition * {
+  -webkit-animation: none !important;
+  -moz-animation: none !important;
+  -o-animation: none !important;
+  -ms-animation: none !important;
+  animation: none !important;
 }
 .end-node {
   background-image: url("./Images/targetreal.png");

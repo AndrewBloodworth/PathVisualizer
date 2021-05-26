@@ -13,6 +13,8 @@ export const Grid = ({ slider, setSlider }) => {
   useEffect(() => {
     let board = new Board();
     board.manufactureGraph();
+    const gridSizer = board.assignGridOfSize(5);
+    gridSizer();
     dispatch(setBoard(board));
   }, [dispatch]);
   const handleMouseLeave = (e) => {
@@ -26,7 +28,6 @@ export const Grid = ({ slider, setSlider }) => {
       </div>
     );
   }
-
   const getRows = () => {
     return [...Array(board.height).keys()].map((row) => (
       <tr key={row} id={`row-${row}`}>
