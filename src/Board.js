@@ -6,6 +6,9 @@ class Node {
     this.items = items;
     this.state = "unvisited";
   }
+  hasItem() {
+    return this.items.length > 0;
+  }
 }
 
 export class Board {
@@ -20,12 +23,13 @@ export class Board {
     this.solved = false;
   }
   manufactureGrid(slider) {
+    this.walls = [];
+    this.solved = false;
     this.manufactureGraph(slider);
   }
   manufactureGraph(n = 5) {
     let size = (window.innerHeight - 50) / n - 3;
     let m = window.innerWidth / ((window.innerHeight - 50) / n);
-    console.log(size, (window.innerHeight - 50) / n, (n + 1) / n);
     this.height = Number(n);
     this.width = Math.floor(m) - 1;
     let r = document.querySelector(":root");
@@ -79,6 +83,7 @@ export class Board {
   }
   placeNode(name, id) {
     if (name === "start-node") {
+      console.log(this.grid);
       this.grid[this.start].items.shift();
       this.grid[id].items.unshift("start-node");
       this.start = id;
@@ -117,10 +122,16 @@ export class Board {
         el.className === "visited" ||
         el.className === "path" ||
         el.className === "visited-immediate" ||
-        el.className === "path-immediate"
+        el.className === "path-immediate" ||
+        el.className === "start-node" ||
+        el.className === "end-node"
       ) {
-        el.className = "unvisited";
-        this.grid[box].state = "unvisited";
+        if (!this.grid[box].hasItem() && this.grid[box].state !== "wall") {
+          el.className = "unvisited";
+        }
+        if (this.grid[box].state !== "wall") {
+          this.grid[box].state = "unvisited";
+        }
       }
       if (this.walls.includes(box) && clearWalls) {
         el.className = "unvisited";

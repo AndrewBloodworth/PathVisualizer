@@ -126,7 +126,7 @@ td {
     transform: scale(1);
   }
 }
-@keyframes nodeAnimation {
+@keyframes startNodeAnimation {
   0% {
     transform: scale(0.3);
     border-radius: 100%;
@@ -144,13 +144,26 @@ td {
 
   background-size: contain;
 
-  animation-name: nodeAnimation;
+  animation-name: startNodeAnimation;
   animation-duration: 0.5s;
 }
+@keyframes endNodeAnimation {
+  0% {
+    transform: scale(0.3);
+    border-radius: 100%;
+  }
+  75% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
 .end-node {
-  background-image: url("./Images/149-1491115_transparent-target-symbol-png-target-icon-transparent-background.png");
+  background-image: url("./Images/targetreal.png");
   background-size: cover;
-  animation-name: nodeAnimation;
+  animation-name: endNodeAnimation;
   animation-duration: 0.5s;
 }
 .wall {
