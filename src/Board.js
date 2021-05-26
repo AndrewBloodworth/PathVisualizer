@@ -1,11 +1,11 @@
 import { dijkstra } from "./algorithms/dijkstras";
 
 class Node {
-  constructor(key) {
-    this.key = key;
-    this.neighbors = [];
+  constructor(neighbors, items = []) {
+    this.neighbors = neighbors;
+    this.items = items;
+    this.state = "unvisited";
   }
-  getNeighbors() {}
 }
 
 export class Board {
@@ -20,48 +20,30 @@ export class Board {
     this.solved = false;
   }
   manufactureGrid(slider) {
-    if (slider == 0) {
-      slider = 25;
-    } else if (slider == 1) {
-      slider = 30;
-    } else {
-      slider = 50;
-    }
-    console.log(slider);
-    var r = document.querySelector(":root");
-    r.style.setProperty("--size", `${slider}px`);
     this.manufactureGraph(slider);
   }
-  manufactureGraph(size = 50) {
-    this.height = Math.floor(window.innerHeight / size);
-    this.width = Math.floor(window.innerWidth / size);
-    console.log(this.height, this.width);
+  manufactureGraph(n = 5) {
+    let size = (window.innerHeight - 50) / n - 3;
+    let m = window.innerWidth / ((window.innerHeight - 50) / n);
+    console.log(size, (window.innerHeight - 50) / n, (n + 1) / n);
+    this.height = Number(n);
+    this.width = Math.floor(m) - 1;
+    let r = document.querySelector(":root");
+    r.style.setProperty("--size", `${size}px`);
     const vertMiddle = Math.floor(this.height / 2);
     const horzFirstThird = Math.floor(this.width / 6);
     const horzLastThird = this.width - Math.floor(this.width / 6);
     this.start = `${vertMiddle}-${horzFirstThird}`;
     this.end = `${vertMiddle}-${horzLastThird}`;
+    let temp = {};
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
         let id = `${i}-${j}`;
         let neighbors = this.findNeighbors(i, j);
-        if (id === this.start) {
-          this.grid[id] = {
-            neighbors,
-            items: ["start-node"],
-            state: "unvisited",
-          };
-        } else if (id === this.end) {
-          this.grid[id] = {
-            neighbors,
-            items: ["end-node"],
-            state: "unvisited",
-          };
-        } else {
-          this.grid[id] = { neighbors, items: [], state: "unvisited" };
-        }
+        temp[id] = new Node(neighbors, this.nodetype(id));
       }
     }
+    this.grid = temp;
   }
   findNeighbors(i, j) {
     let right = j + 1 > this.width - 1 ? null : `${i}-${j + 1}`;
@@ -73,6 +55,15 @@ export class Board {
   isNode(id) {
     if (id === this.start || id === this.end) {
       return true;
+    }
+  }
+  nodetype(id) {
+    if (id === this.start) {
+      return ["start-node"];
+    } else if (id === this.end) {
+      return ["end-node"];
+    } else {
+      return [];
     }
   }
   addRemoveWall(target) {
@@ -104,11 +95,13 @@ export class Board {
       length = result.path.length;
     if (this.solved) {
       for (let i = 0; i < result.path.length; i++) {
+        this.grid[result.path[i]].state = "path-immediate";
         document.getElementById(result.path[i]).className = "path-immediate";
       }
     } else {
       this.solved = true;
       const interval = setInterval(() => {
+        this.grid[result.path[i]].state = "path";
         document.getElementById(result.path[i]).className = "path";
         i++;
         if (i === length) {

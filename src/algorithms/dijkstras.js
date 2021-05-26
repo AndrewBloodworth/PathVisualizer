@@ -16,7 +16,11 @@ export const dijkstra = async () => {
   const costs = Object.assign({ end: Infinity }, grid[start].neighbors);
   const parents = { end: null };
   const processed = [];
-  for (let wall of walls) if (costs[wall]) delete grid[wall].neighbors;
+  for (let wall of walls) {
+    if (costs[wall]) {
+      delete costs[wall];
+    }
+  }
   for (let child in grid[start].neighbors) {
     parents[child] = start;
   }
@@ -27,7 +31,6 @@ export const dijkstra = async () => {
     let visitedNodes = [];
     while (true) {
       let cost = costs[node];
-
       let children;
       if (grid[node]) {
         children = grid[node].neighbors;
@@ -35,7 +38,7 @@ export const dijkstra = async () => {
         children = {};
       }
       for (let n in children) {
-        if (!walls.includes(n)) {
+        if (!walls.includes(n) || walls.includes(end)) {
           let newCost = cost + children[n];
           if (!costs[n]) {
             costs[n] = newCost;

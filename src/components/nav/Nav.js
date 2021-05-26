@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { selectBoard, updateGrid } from "../grid/boardSlice";
 
-export const Nav = () => {
+export const Nav = ({ slider, setSlider }) => {
   const { board } = useSelector(selectBoard);
-  const [reload, setReload] = useState("");
   const handleClick = async () => {
     board.solved = false;
     board.runDijkstra();
@@ -14,9 +13,8 @@ export const Nav = () => {
     board.clearBoard(true);
   };
   const handleChange = (e) => {
-    //board.manufactureGrid(e.target.value);
-    //useDispatch(updateGrid(board.grid));
-    setReload("");
+    board.manufactureGrid(e.target.value);
+    setSlider(e.target.value);
   };
   return (
     <div className="nav">
@@ -30,13 +28,15 @@ export const Nav = () => {
         <button onClick={handleClear}>Clear Board</button>
       </div>
       <div className="slider">
+        <label for="slider">{slider} rows</label>
         <input
           onChange={handleChange}
           type="range"
-          id="volume"
+          value={slider}
+          id="slider"
           name="volume"
-          min="0"
-          max="2"
+          min="5"
+          max="20"
         ></input>
       </div>
     </div>

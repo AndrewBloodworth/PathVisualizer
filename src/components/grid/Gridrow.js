@@ -28,20 +28,16 @@ export const Gridrow = ({
       setNode({ ...node });
     } else if (mouseDown) board.addRemoveWall(target);
   };
-
   return [...Array(board.width).keys()].map((col) => {
-    let cName;
-    if (Object.keys(board).length) {
-      let id = `${currentRow}-${col}`;
-      cName =
-        board.grid[id].items.length > 0
-          ? board.grid[id].items[0]
-          : board.grid[id].state;
-    }
+    let id = `${currentRow}-${col}`;
+    let cName =
+      board.grid[id].items.length > 0
+        ? board.grid[id].items[0]
+        : board.grid[id].state;
     return (
       <td
         key={col}
-        id={`${currentRow}-${col}`}
+        id={id}
         className={cName}
         onMouseEnter={handleMouseEnter}
         onMouseDown={handleMouseDown}
