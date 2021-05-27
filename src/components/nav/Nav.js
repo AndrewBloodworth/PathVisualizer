@@ -5,7 +5,7 @@ import { selectBoard } from "../grid/boardSlice";
 export const Nav = ({ slider, setSlider }) => {
   const { board } = useSelector(selectBoard);
 
-  const [speed, setSpeed] = useState(10);
+  const [speed, setSpeed] = useState(100);
 
   const handleClick = async () => {
     board.solved = false;
@@ -16,21 +16,26 @@ export const Nav = ({ slider, setSlider }) => {
     board.clearBoard(true);
   };
   const handleChange = (e) => {
-    console.log(board.graph);
-    let body = document.getElementsByTagName("body")[0];
-    body.className = "notransition";
+    document.body.style.setProperty("--toggle", "0");
+    document.body.style.setProperty("--playState", "finished");
     board.manufactureGrid(e.target.value);
     setSlider(e.target.value);
   };
 
   const handleMouseLeave = () => {
-    let body = document.getElementsByTagName("body")[0];
-    body.className = "";
+    document.body.className = "";
+    document.body.style.setProperty("--toggle", "1");
+    document.body.style.setProperty("--playState", "idle");
   };
 
-  const handleChangeSpeed = (e) => {
-    setSpeed(e.target.value);
-    board.speed = e.target.value;
+  const handleChangeSpeed = ({ target }) => {
+    setSpeed(target.value);
+    board.speed = target.value;
+    document.body.style.setProperty("--visit-delay", `${board.speed}ms`);
+    document.body.style.setProperty(
+      "--animation-speed-visited",
+      `${board.speed * 3}ms`
+    );
   };
   return (
     <div className="nav" onMouseLeave={handleMouseLeave}>
@@ -64,7 +69,7 @@ export const Nav = ({ slider, setSlider }) => {
           id="speed"
           name="speed"
           min="10"
-          max="200"
+          max="500"
         ></input>
       </div>
     </div>

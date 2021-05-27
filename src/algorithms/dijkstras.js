@@ -29,6 +29,7 @@ export const dijkstra = async () => {
 
   const myPromise = new Promise((resolve, reject) => {
     let visitedNodes = [];
+
     while (true) {
       let cost = costs[node];
       let children;
@@ -58,11 +59,15 @@ export const dijkstra = async () => {
         !walls.includes(node)
       )
         visitedNodes.push(node);
+
       if (node === end) {
         break;
       }
       processed.push(node);
       node = lowestCostNode(costs, processed);
+      if (node === null) {
+        break;
+      }
     }
 
     if (board.solved) {
@@ -92,6 +97,10 @@ export const dijkstra = async () => {
   let optimalPath = [end];
   let parent = parents[end];
   delete parents[start];
+
+  if (!parent) {
+    return undefined;
+  }
 
   while (parent) {
     optimalPath.push(parent);

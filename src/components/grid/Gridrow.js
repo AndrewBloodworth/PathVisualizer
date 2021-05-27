@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectBoard } from "./boardSlice";
 
@@ -12,9 +12,12 @@ export const Gridrow = ({
   setSlider,
 }) => {
   const { board } = useSelector(selectBoard);
+  useEffect(() => {
+    // document.body.style.setProperty("--toggle", "1");
+    //document.body.style.setProperty("--playState", "running");
+  });
   const handleMouseDown = (e) => {
     e.preventDefault();
-    console.log(board.isNode(e.target.id));
     if (board.isNode(e.target.id))
       setNode({ currentlyMoving: true, type: e.target.className });
     board.addRemoveWall(e.target);

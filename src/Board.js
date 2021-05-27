@@ -21,7 +21,7 @@ export class Board {
     this.grid = {};
     this.graph = {};
     this.solved = false;
-    this.speed = 10;
+    this.speed = 100;
   }
   manufactureGrid(slider) {
     //TODO more elegant way of rotating start
@@ -147,6 +147,10 @@ export class Board {
   async runDijkstra() {
     this.clearBoard(false);
     let result = await dijkstra();
+    if (!result) {
+      this.solved = true;
+      return;
+    }
     let i = 0,
       length = result.path.length;
 
@@ -189,7 +193,7 @@ export class Board {
         if (i === length) {
           clearInterval(interval);
         }
-      }, 1);
+      }, 10);
     }
   }
   clearBoard(clearWalls) {

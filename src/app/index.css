@@ -2,6 +2,15 @@
   --size: 50px;
 }
 
+body {
+  --toggle: 1;
+  --playState: "idle";
+  --animation-speed: 0.5s;
+  --animation-speed-path: 10ms;
+  --animation-speed-visited: 1s;
+  --visit-delay: 0.1s;
+}
+
 html,
 body,
 main {
@@ -146,7 +155,8 @@ td {
   background-size: contain;
 
   animation-name: startNodeAnimation;
-  animation-duration: 0.5s;
+  animation-duration: calc(var(--toggle) * var(--animation-speed));
+  animation-play-state: var(--playState);
 }
 @keyframes endNodeAnimation {
   0% {
@@ -161,7 +171,7 @@ td {
     transform: scale(1);
   }
 }
-.notransition * {
+.noanimation * {
   -webkit-animation: none !important;
   -moz-animation: none !important;
   -o-animation: none !important;
@@ -172,23 +182,29 @@ td {
   background-image: url("./Images/targetreal.png");
   background-size: cover;
   animation-name: endNodeAnimation;
-  animation-duration: 0.5s;
+  animation-duration: calc(var(--toggle) * var(--animation-speed));
+  animation-play-state: var(--playState);
 }
 .wall {
   background-color: rgb(13, 13, 39);
   animation-name: wallAnimation;
-  animation-duration: 0.5s;
+  animation-duration: calc(var(--toggle) * var(--animation-speed));
+  animation-play-state: var(--playState);
 }
 .path {
   background-color: rgb(238, 228, 91);
   border-color: rgb(238, 228, 91);
   animation-name: wallAnimation;
-  animation-duration: 0.5s;
+  animation-duration: calc(var(--toggle) * var(--animation-speed-path));
+  animation-play-state: var(--playState);
 }
 .visited {
-  background-color: rgba(0, 190, 218, 0.75);
+  background-color: rgba(247, 233, 46, 0.75);
   animation-name: visitedStartNodeBlueAnimation;
-  animation-duration: 1s;
+  animation-duration: calc(var(--toggle) * var(--animation-speed-visited));
+  animation-play-state: var(--playState);
+  animation-fill-mode: forwards;
+  animation-delay: var(--visit-delay);
 }
 .visited-immediate {
   background-color: rgba(0, 190, 218, 0.75);
