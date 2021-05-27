@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectBoard } from "../grid/boardSlice";
 
@@ -7,6 +7,13 @@ export const Nav = ({ slider, setSlider }) => {
 
   const [speed, setSpeed] = useState(100);
 
+  useEffect(() => {
+    document.body.style.setProperty("--visit-delay", `${100}ms`);
+    document.body.style.setProperty(
+      "--animation-speed-visited",
+      `${100 * 10}ms`
+    );
+  }, []);
   const handleClick = async () => {
     board.solved = false;
     board.runDijkstra();
@@ -18,8 +25,7 @@ export const Nav = ({ slider, setSlider }) => {
   const handleChange = (e) => {
     document.body.style.setProperty("--toggle", "0");
     document.body.style.setProperty("--playState", "finished");
-    board.manufactureGrid(e.target.value);
-    setSlider(e.target.value);
+    setSlider(board.manufactureGrid(e.target.value) || slider);
   };
 
   const handleMouseLeave = () => {
@@ -30,12 +36,7 @@ export const Nav = ({ slider, setSlider }) => {
 
   const handleChangeSpeed = ({ target }) => {
     setSpeed(target.value);
-    board.speed = target.value;
-    document.body.style.setProperty("--visit-delay", `${board.speed}ms`);
-    document.body.style.setProperty(
-      "--animation-speed-visited",
-      `${board.speed * 3}ms`
-    );
+    board.updateSpeed(target.value);
   };
   return (
     <div className="nav" onMouseLeave={handleMouseLeave}>
@@ -48,29 +49,31 @@ export const Nav = ({ slider, setSlider }) => {
       <div className="clear-button">
         <button onClick={handleClear}>Clear Board</button>
       </div>
-      <div className="slider">
-        <label for="slider">{slider} rows</label>
-        <input
-          onChange={handleChange}
-          type="range"
-          value={slider}
-          id="slider"
-          name="volume"
-          min="5"
-          max="20"
-        ></input>
-      </div>
-      <div className="speed">
-        <label for="speed">{speed} speed</label>
-        <input
-          onChange={handleChangeSpeed}
-          type="range"
-          value={speed}
-          id="speed"
-          name="speed"
-          min="10"
-          max="500"
-        ></input>
+      <div className="toggle">
+        <div className="slider">
+          <label for="slider">{slider} rows</label>
+          <input
+            onChange={handleChange}
+            type="range"
+            value={slider}
+            id="slider"
+            name="volume"
+            min="5"
+            max="20"
+          ></input>
+        </div>
+        <div className="speed">
+          <label for="speed">Speed: {speed}ms</label>
+          <input
+            onChange={handleChangeSpeed}
+            type="range"
+            value={speed}
+            id="speed"
+            name="speed"
+            min="10"
+            max="300"
+          ></input>
+        </div>
       </div>
     </div>
   );

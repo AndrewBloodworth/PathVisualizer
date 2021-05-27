@@ -58,8 +58,16 @@ main {
   border: none;
   cursor: pointer;
 }
-
+.toggle {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 50%;
+}
 .slider label {
+  color: white;
+}
+.speed {
   color: white;
 }
 
@@ -201,7 +209,8 @@ td {
 .visited {
   background-color: rgba(247, 233, 46, 0.75);
   animation-name: visitedStartNodeBlueAnimation;
-  animation-duration: calc(var(--toggle) * var(--animation-speed-visited));
+  animation-duration: calc(var(--toggle) * 0.5s);
+  /*var(--animation-speed-visited)*/
   animation-play-state: var(--playState);
   animation-fill-mode: forwards;
   animation-delay: var(--visit-delay);

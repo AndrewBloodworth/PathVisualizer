@@ -23,31 +23,35 @@ export class Board {
     this.solved = false;
     this.speed = 100;
   }
-  manufactureGrid(slider) {
+  manufactureGrid(numberOfRows) {
     //TODO more elegant way of rotating start
     document.getElementById(this.start).style = "";
 
-    /*
-    for (let wall of this.walls) {
-      this.grid[wall].state = "unvisited";
+    if (
+      this.nodeInBoundary(this.start, numberOfRows) &&
+      this.nodeInBoundary(this.end, numberOfRows)
+    ) {
+      this.graph = {};
+      this.assignGridOfSize(numberOfRows);
+      return numberOfRows;
     }
-    this.walls = [];
-    this.solved = false;
-    */
-    //this.manufactureGraph(slider);
-    //console.log(this.graph);
-    this.graph = {};
-    const gridSizer = this.assignGridOfSize(slider);
-    gridSizer();
   }
   assignGridOfSize(numberOfRows) {
     const dimensions = this.getDimensions(numberOfRows);
-    //Makes nodes not clickable
-    //this.assignNodes(dimensions.innerWidth, dimensions.innerHeight);
-    return () => {
-      const cssRoot = document.querySelector(":root");
-      cssRoot.style.setProperty("--size", `${dimensions.verticalPixelCount}px`);
-    };
+
+    const cssRoot = document.querySelector(":root");
+    cssRoot.style.setProperty("--size", `${dimensions.verticalPixelCount}px`);
+  }
+  nodeInBoundary(node, numberOfRows) {
+    const dimensions = this.getDimensions(numberOfRows);
+    let row = Number(node.split("-")[0]);
+    let col = Number(node.split("-")[1]);
+    let bottom = dimensions.innerHeight - 1 + dimensions.offsetHeight;
+    let right = dimensions.innerWidth - 1 + dimensions.offsetWidth;
+    let left = dimensions.offsetWidth;
+    let top = dimensions.offsetHeight;
+
+    return row <= bottom && row >= top && col <= right && col >= left;
   }
   getDimensions(numberOfRows) {
     const navHeight = 50;
@@ -59,10 +63,15 @@ export class Board {
     const innerHeight = Number(numberOfRows);
     const innerWidth = Math.floor(numberOfColumns) - 1;
 
+    const offsetHeight = Math.floor((this.height - innerHeight) / 2);
+    const offsetWidth = Math.floor((this.width - innerWidth) / 2);
+
     return {
       verticalPixelCount,
       innerHeight,
+      offsetHeight,
       innerWidth,
+      offsetWidth,
     };
   }
   assignNodes(width, height) {
@@ -73,11 +82,11 @@ export class Board {
     this.start = `${vertMiddle}-${horzFirstThird}`;
     this.end = `${vertMiddle}-${horzLastThird}`;
   }
-  manufactureGraph() {
-    const dimensions = this.getDimensions(20);
+  manufactureGraph(size = 20) {
+    const dimensions = this.getDimensions(size);
     this.height = dimensions.innerHeight;
     this.width = dimensions.innerWidth;
-    console.log("here");
+
     this.assignNodes(this.width, this.height);
 
     for (let i = 0; i < this.height; i++) {
@@ -109,6 +118,14 @@ export class Board {
       return [];
     }
   }
+  updateSpeed(speedValue) {
+    this.speed = speedValue;
+    document.body.style.setProperty("--visit-delay", `${this.speed}ms`);
+    document.body.style.setProperty(
+      "--animation-speed-visited",
+      `${this.speed * 10}ms`
+    );
+  }
   addRemoveWall(target) {
     let classname = target.className;
     if (
@@ -125,6 +142,9 @@ export class Board {
       this.walls.splice(this.walls.indexOf(target.id), 1);
       target.className = "unvisited";
       this.grid[target.id].state = "unvisited";
+    }
+    if (this.solved) {
+      this.runDijkstra();
     }
   }
   placeNode(name, id) {

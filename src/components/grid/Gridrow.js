@@ -37,10 +37,9 @@ export const Gridrow = ({
 
   //Slider
   const dimensions = board.getDimensions(slider);
-  let round = Math.floor((board.width - dimensions.innerWidth) / 2);
   return [...Array(dimensions.innerWidth).keys()].map((col) => {
     //debugger;
-    let id = `${currentRow}-${col + round}`;
+    let id = `${currentRow}-${col + dimensions.offsetWidth}`;
     board.graph[id] = board.grid[id];
     let cName =
       board.grid[id].items.length > 0
