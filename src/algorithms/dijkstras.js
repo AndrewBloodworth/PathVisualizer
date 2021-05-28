@@ -73,33 +73,39 @@ export const dijkstra = async () => {
     if (board.solved) {
       for (let v of visitedNodes) {
         const el = document.getElementById(v);
-        el.className = "visited-immediate";
-        board.grid[v].state = "visited-immediate";
+        let pathName = !parents[end] ? "deepred" : "visited-immediate";
+        if (el) el.className = pathName;
+        board.grid[v].state = pathName;
       }
-      resolve();
+      resolve(visitedNodes);
     } else {
       let i = 0;
       let interval = setInterval(() => {
         const el = document.getElementById(visitedNodes[i]);
-        el.className = "visited";
-        board.grid[visitedNodes[i]].state = "visited";
+        if (el) {
+          el.className = "visited";
+          board.grid[visitedNodes[i]].state = "visited";
+        }
         i++;
         if (!visitedNodes[i]) {
           clearInterval(interval);
-          resolve();
+          resolve(visitedNodes);
         }
       }, speed);
     }
   });
 
-  await myPromise;
+  let visited = await myPromise;
 
   let optimalPath = [end];
   let parent = parents[end];
   delete parents[start];
 
   if (!parent) {
-    return undefined;
+    return {
+      distance: null,
+      path: visited,
+    };
   }
 
   while (parent) {

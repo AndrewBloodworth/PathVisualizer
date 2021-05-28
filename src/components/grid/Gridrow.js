@@ -12,10 +12,7 @@ export const Gridrow = ({
   setSlider,
 }) => {
   const { board } = useSelector(selectBoard);
-  useEffect(() => {
-    // document.body.style.setProperty("--toggle", "1");
-    //document.body.style.setProperty("--playState", "running");
-  });
+
   const handleMouseDown = (e) => {
     e.preventDefault();
     if (board.isNode(e.target.id))
@@ -30,15 +27,12 @@ export const Gridrow = ({
   const handleMouseEnter = ({ target }) => {
     if (node.currentlyMoving) {
       board.placeNode(node.type, target.id);
-      if (board.solved) board.runDijkstra(0);
       setNode({ ...node });
     } else if (mouseDown) board.addRemoveWall(target);
   };
 
-  //Slider
   const dimensions = board.getDimensions(slider);
   return [...Array(dimensions.innerWidth).keys()].map((col) => {
-    //debugger;
     let id = `${currentRow}-${col + dimensions.offsetWidth}`;
     board.graph[id] = board.grid[id];
     let cName =

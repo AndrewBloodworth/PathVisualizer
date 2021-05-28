@@ -28,7 +28,6 @@ export const Grid = ({ slider, setSlider }) => {
     );
   }
   const getRows = () => {
-    //Slider
     const dimensions = board.getDimensions(slider);
     return [...Array(dimensions.innerHeight).keys()].map((row) => (
       <tr key={row} id={`row-${row}`}>

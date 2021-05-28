@@ -1,7 +1,8 @@
 import { dijkstra } from "./algorithms/dijkstras";
 
 class Node {
-  constructor(neighbors, items = []) {
+  constructor(id, neighbors, items = []) {
+    this.id = id;
     this.neighbors = neighbors;
     this.items = items;
     this.state = "unvisited";
@@ -37,10 +38,10 @@ export class Board {
     }
   }
   assignGridOfSize(numberOfRows) {
-    const dimensions = this.getDimensions(numberOfRows);
+    const { verticalPixelCount } = this.getDimensions(numberOfRows);
 
     const cssRoot = document.querySelector(":root");
-    cssRoot.style.setProperty("--size", `${dimensions.verticalPixelCount}px`);
+    cssRoot.style.setProperty("--size", `${verticalPixelCount}px`);
   }
   nodeInBoundary(node, numberOfRows) {
     const dimensions = this.getDimensions(numberOfRows);
@@ -61,8 +62,8 @@ export class Board {
     const verticalPixelCount = conceptualPixelCount - boarderPixelCount;
     const numberOfColumns = window.innerWidth / conceptualPixelCount;
     const innerHeight = Number(numberOfRows);
-    const innerWidth = Math.floor(numberOfColumns) - 1;
-
+    let innerWidth = Math.floor(numberOfColumns) - 1;
+    if (innerWidth > 40) innerWidth = 40;
     const offsetHeight = Math.floor((this.height - innerHeight) / 2);
     const offsetWidth = Math.floor((this.width - innerWidth) / 2);
 
@@ -93,7 +94,7 @@ export class Board {
       for (let j = 0; j < this.width; j++) {
         const id = `${i}-${j}`;
         const neighbors = this.findNeighbors(i, j);
-        this.grid[id] = new Node(neighbors, this.nodetype(id));
+        this.grid[id] = new Node(id, neighbors, this.nodetype(id));
       }
     }
   }
@@ -123,7 +124,7 @@ export class Board {
     document.body.style.setProperty("--visit-delay", `${this.speed}ms`);
     document.body.style.setProperty(
       "--animation-speed-visited",
-      `${this.speed * 10}ms`
+      `${this.speed * 5}ms`
     );
   }
   addRemoveWall(target) {
@@ -133,7 +134,8 @@ export class Board {
       classname === "visited" ||
       classname === "path" ||
       classname === "visited-immediate" ||
-      classname === "path-immediate"
+      classname === "path-immediate" ||
+      classname === "deepred"
     ) {
       this.walls.push(target.id);
       target.className = "wall";
@@ -162,14 +164,27 @@ export class Board {
       this.grid[id].items.unshift("end-node");
       this.end = id;
     }
+    if (this.solved) {
+      this.runDijkstra();
+    }
   }
 
   async runDijkstra() {
     this.clearBoard(false);
     let result = await dijkstra();
-    if (!result) {
-      this.solved = true;
+    if (!result.distance) {
+      this.grid[this.start].state = "deepred";
+      result.path.forEach((id) => {
+        let el = document.getElementById(id);
+        if (!this.isNode(id)) {
+          el.className = "deepred";
+        }
+        this.grid[id].state = "deepred";
+      });
+
+      this.solved = false;
       return;
+    } else {
     }
     let i = 0,
       length = result.path.length;
@@ -201,19 +216,33 @@ export class Board {
 
     if (this.solved) {
       for (let i = 0; i < result.path.length; i++) {
-        this.grid[result.path[i]].state = "path-immediate";
-        document.getElementById(result.path[i]).className = "path-immediate";
+        let el = document.getElementById(result.path[i]);
+        if (el) {
+          this.grid[result.path[i]].state = "path-immediate";
+          el.className = "path-immediate";
+        }
       }
     } else {
       this.solved = true;
       const interval = setInterval(() => {
-        this.grid[result.path[i]].state = "path";
-        document.getElementById(result.path[i]).className = "path";
+        let el = document.getElementById(result.path[i]);
+        if (el) {
+          this.grid[result.path[i]].state = "path";
+          el.className = "path";
+        }
         i++;
         if (i === length) {
           clearInterval(interval);
         }
-      }, 10);
+      }, this.speed);
+    }
+  }
+  removeVisited(numberOfRows) {
+    for (let box in this.grid) {
+      let id = this.grid[box].id;
+      if (!this.nodeInBoundary(id, numberOfRows) && !this.walls.includes(id)) {
+        this.grid[box].state = "unvisited";
+      }
     }
   }
   clearBoard(clearWalls) {
@@ -225,7 +254,8 @@ export class Board {
         el.className === "visited-immediate" ||
         el.className === "path-immediate" ||
         el.className === "start-node" ||
-        el.className === "end-node"
+        el.className === "end-node" ||
+        el.className === "deepred"
       ) {
         if (!this.grid[box].hasItem() && this.grid[box].state !== "wall") {
           el.className = "unvisited";

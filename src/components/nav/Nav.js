@@ -11,7 +11,7 @@ export const Nav = ({ slider, setSlider }) => {
     document.body.style.setProperty("--visit-delay", `${100}ms`);
     document.body.style.setProperty(
       "--animation-speed-visited",
-      `${100 * 10}ms`
+      `${100 * 5}ms`
     );
   }, []);
   const handleClick = async () => {
@@ -25,6 +25,8 @@ export const Nav = ({ slider, setSlider }) => {
   const handleChange = (e) => {
     document.body.style.setProperty("--toggle", "0");
     document.body.style.setProperty("--playState", "finished");
+    board.removeVisited(slider);
+    //If start or end node is out of window then hold slider value
     setSlider(board.manufactureGrid(e.target.value) || slider);
   };
 
