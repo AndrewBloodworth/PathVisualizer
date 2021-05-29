@@ -131,6 +131,15 @@ td {
   border: 1px solid lightblue;
   height: var(--size);
   width: var(--size);
+  font-size: 8px;
+}
+.specs {
+  color: rgb(13, 13, 39);
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 @keyframes visitedStartNodeBlueAnimation {

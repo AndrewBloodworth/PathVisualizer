@@ -25,6 +25,7 @@ export const Nav = ({ slider, setSlider }) => {
     board.clearBoard(true);
   };
   const handleChange = (e) => {
+    console.log(board.grid);
     board.setAnimations("off");
     board.removeVisited(slider);
     //If start or end node is out of window then hold slider value
@@ -32,7 +33,9 @@ export const Nav = ({ slider, setSlider }) => {
   };
 
   const handleMouseLeave = () => {
-    board.setAnimations("on");
+    try {
+      board.setAnimations("on");
+    } catch (error) {}
   };
 
   const handleChangeSpeed = ({ target }) => {
@@ -92,6 +95,7 @@ export const Nav = ({ slider, setSlider }) => {
             </p>
           </div>
         </div>
+        <div className="explanation"></div>
       </div>
     </div>
   );

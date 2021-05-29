@@ -47,7 +47,11 @@ export const Gridrow = ({
         onMouseEnter={handleMouseEnter}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
-      ></td>
+      >
+        <div className="specs" id={`specs-${id}`}>
+          {board.grid[id].getSpecs()}
+        </div>
+      </td>
     );
   });
 };

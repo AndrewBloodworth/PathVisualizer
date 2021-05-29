@@ -28,6 +28,13 @@ export const dijkstra = async () => {
     }
   }
   for (let child in graph[start].neighbors) {
+    if (
+      graph[child] &&
+      !Object.keys(graph[start].neighbors).includes(end) &&
+      !walls.includes(child)
+    ) {
+      graph[child].distance = 1;
+    }
     parents[child] = start;
   }
 
@@ -63,8 +70,12 @@ export const dijkstra = async () => {
         el.className !== "start-node" &&
         el.className !== "end-node" &&
         !walls.includes(node)
-      )
+      ) {
         visitedNodes.push(node);
+        if (node !== start && node !== end) {
+          graph[node].distance = costs[node];
+        }
+      }
 
       if (node === end) {
         break;
@@ -79,23 +90,25 @@ export const dijkstra = async () => {
     if (board.solved) {
       for (let v of visitedNodes) {
         const el = document.getElementById(v);
+        const specEl = document.getElementById(`specs-${v}`);
         let pathName = !parents[end] ? "deepred" : "visited-immediate";
         if (el) {
-          //el.innerHTML = v !== start ? costs[v] : "";
+          specEl.innerHTML = v !== start ? graph[v].getSpecs() : "";
           el.className = pathName;
-          board.grid[v].state = pathName;
+          graph[v].state = pathName;
         }
-        // board.grid[v].state = pathName;
       }
       resolve(visitedNodes);
     } else {
       let i = 0;
       let interval = setInterval(() => {
         const el = document.getElementById(visitedNodes[i]);
+        const specEl = document.getElementById(`specs-${visitedNodes[i]}`);
         if (el) {
           el.className = "visited";
-          //el.innerHTML = visitedNodes[i] !== start ? costs[visitedNodes[i]] : "";
-          board.grid[visitedNodes[i]].state = "visited";
+          specEl.innerHTML =
+            visitedNodes[i] !== start ? graph[visitedNodes[i]].getSpecs() : "";
+          graph[visitedNodes[i]].state = "visited";
         }
         i++;
         if (!visitedNodes[i]) {

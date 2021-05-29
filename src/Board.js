@@ -6,6 +6,10 @@ class Node {
     this.neighbors = neighbors;
     this.items = items;
     this.state = "unvisited";
+    this.distance = "";
+  }
+  getSpecs() {
+    return this.distance;
   }
   hasItem() {
     return this.items.length > 0;
@@ -23,11 +27,11 @@ export class Board {
     this.graph = {};
     this.solved = false;
     this.speed = 100;
+    this.algoQueue = [];
   }
   manufactureGrid(numberOfRows) {
     //TODO more elegant way of rotating start
     document.getElementById(this.start).style = "";
-
     if (
       this.nodeInBoundary(this.start, numberOfRows) &&
       this.nodeInBoundary(this.end, numberOfRows)
@@ -140,6 +144,7 @@ export class Board {
   }
   addRemoveWall(target) {
     let classname = target.className;
+    const specEl = document.getElementById(`specs-${target.id}`);
     if (
       classname === "unvisited" ||
       classname === "visited" ||
@@ -150,6 +155,7 @@ export class Board {
     ) {
       this.walls.push(target.id);
       target.className = "wall";
+      specEl.innerHTML = "";
       this.grid[target.id].state = "wall";
     } else if (target.className === "wall") {
       this.walls.splice(this.walls.indexOf(target.id), 1);
@@ -250,14 +256,16 @@ export class Board {
       st.style.transform = "rotate(90deg)";
     }
 
+    //Print the path
+
     if (this.solved) {
-      for (let i = 0; i < result.path.length; i++) {
-        let el = document.getElementById(result.path[i]);
+      result.path.forEach((id) => {
+        let el = document.getElementById(id);
         if (el) {
-          this.grid[result.path[i]].state = "path-immediate";
+          this.grid[id].state = "path-immediate";
           el.className = "path-immediate";
         }
-      }
+      });
     } else {
       this.solved = true;
       const interval = setInterval(() => {
@@ -267,9 +275,7 @@ export class Board {
           el.className = "path";
         }
         i++;
-        if (i === length) {
-          clearInterval(interval);
-        }
+        if (i >= length) clearInterval(interval);
       }, this.speed);
     }
   }
@@ -278,12 +284,14 @@ export class Board {
       let id = this.grid[box].id;
       if (!this.nodeInBoundary(id, numberOfRows) && !this.walls.includes(id)) {
         this.grid[box].state = "unvisited";
+        this.grid[box].distance = "";
       }
     }
   }
   clearBoard(clearWalls) {
     for (let box in this.graph) {
       const el = document.getElementById(box);
+      const specEl = document.getElementById(`specs-${box}`);
       if (
         el.className === "visited" ||
         el.className === "path" ||
@@ -295,10 +303,11 @@ export class Board {
       ) {
         if (!this.grid[box].hasItem() && this.grid[box].state !== "wall") {
           el.className = "unvisited";
-          //el.innerHTML = "";
         }
         if (this.grid[box].state !== "wall") {
           this.grid[box].state = "unvisited";
+          this.grid[box].distance = "";
+          specEl.innerHTML = "";
         }
       }
       if (this.walls.includes(box) && clearWalls) {
