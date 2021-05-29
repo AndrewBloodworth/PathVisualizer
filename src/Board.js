@@ -203,7 +203,9 @@ export class Board {
     this.disableNavBar(false);
     this.disableGridTable(false);
     if (result.distance === Infinity) {
-      this.grid[this.start].state = "deepred";
+      if (this.grid[this.start].state !== "wall") {
+        this.grid[this.start].state = "deepred";
+      }
       result.path.forEach((id) => {
         let el = document.getElementById(id);
         if (!this.isNode(id)) {
