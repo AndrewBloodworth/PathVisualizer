@@ -80,7 +80,7 @@ export class Board {
   assignNodes(width, height) {
     const vertMiddle = Math.floor(height / 2) - 1;
     const horzFirstThird = Math.floor(width / 2) - 3;
-    const horzLastThird = width - Math.floor(width / 2) + 1;
+    const horzLastThird = width - Math.floor(width / 2) + 2;
 
     this.start = `${vertMiddle}-${horzFirstThird}`;
     this.end = `${vertMiddle}-${horzLastThird}`;
@@ -293,6 +293,7 @@ export class Board {
       ) {
         if (!this.grid[box].hasItem() && this.grid[box].state !== "wall") {
           el.className = "unvisited";
+          //el.innerHTML = "";
         }
         if (this.grid[box].state !== "wall") {
           this.grid[box].state = "unvisited";

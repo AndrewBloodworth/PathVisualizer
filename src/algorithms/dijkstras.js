@@ -80,8 +80,12 @@ export const dijkstra = async () => {
       for (let v of visitedNodes) {
         const el = document.getElementById(v);
         let pathName = !parents[end] ? "deepred" : "visited-immediate";
-        if (el) el.className = pathName;
-        board.grid[v].state = pathName;
+        if (el) {
+          //el.innerHTML = v !== start ? costs[v] : "";
+          el.className = pathName;
+          board.grid[v].state = pathName;
+        }
+        // board.grid[v].state = pathName;
       }
       resolve(visitedNodes);
     } else {
@@ -90,6 +94,7 @@ export const dijkstra = async () => {
         const el = document.getElementById(visitedNodes[i]);
         if (el) {
           el.className = "visited";
+          //el.innerHTML = visitedNodes[i] !== start ? costs[visitedNodes[i]] : "";
           board.grid[visitedNodes[i]].state = "visited";
         }
         i++;
