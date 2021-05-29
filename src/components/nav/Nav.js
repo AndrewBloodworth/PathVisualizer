@@ -58,7 +58,9 @@ export const Nav = ({ slider, setSlider }) => {
         <h2 style={{ margin: 0 }}>Settings:</h2>
         <div className="settings">
           <div className="slider">
-            <label for="slider">Rows: {slider}</label>
+            <label for="slider" style={{ width: 61 }}>
+              Rows: {slider}
+            </label>
             <input
               onChange={handleChange}
               type="range"
@@ -70,7 +72,9 @@ export const Nav = ({ slider, setSlider }) => {
             ></input>
           </div>
           <div className="speed">
-            <label for="speed">Speed: {speed}ms</label>
+            <label for="speed" style={{ width: 95 }}>
+              Speed: {speed}ms
+            </label>
             <input
               onChange={handleChangeSpeed}
               type="range"
@@ -83,7 +87,7 @@ export const Nav = ({ slider, setSlider }) => {
           </div>
           <div className="distance">
             <p style={{ paddingRight: 10 }}>Path Distance: </p>
-            <p id="distance" style={{ color: "white" }}>
+            <p id="distance" style={{ width: 80, textAlign: "center" }}>
               Infinity
             </p>
           </div>
