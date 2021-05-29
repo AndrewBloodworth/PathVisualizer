@@ -40,7 +40,7 @@ export const Nav = ({ slider, setSlider }) => {
     board.updateSpeed(target.value);
   };
   return (
-    <div className="nav" onMouseLeave={handleMouseLeave}>
+    <div className="nav" id="nav" onMouseLeave={handleMouseLeave}>
       <div className="nav-title">
         <h1>Path Visualizer</h1>
       </div>
@@ -54,37 +54,40 @@ export const Nav = ({ slider, setSlider }) => {
           Clear Board
         </button>
       </div>
-      <div className="toggle">
-        <div className="slider">
-          <label for="slider">{slider} rows</label>
-          <input
-            onChange={handleChange}
-            type="range"
-            value={slider}
-            id="slider"
-            name="volume"
-            min="5"
-            max="20"
-          ></input>
+      <div className="settings-container">
+        <h2 style={{ margin: 0 }}>Settings:</h2>
+        <div className="settings">
+          <div className="slider">
+            <label for="slider">Rows: {slider}</label>
+            <input
+              onChange={handleChange}
+              type="range"
+              value={slider}
+              id="slider"
+              name="volume"
+              min="5"
+              max="20"
+            ></input>
+          </div>
+          <div className="speed">
+            <label for="speed">Speed: {speed}ms</label>
+            <input
+              onChange={handleChangeSpeed}
+              type="range"
+              value={speed}
+              id="speed"
+              name="speed"
+              min="10"
+              max="300"
+            ></input>
+          </div>
+          <div className="distance">
+            <p style={{ paddingRight: 10 }}>Path Distance: </p>
+            <p id="distance" style={{ color: "white" }}>
+              Infinity
+            </p>
+          </div>
         </div>
-        <div className="speed">
-          <label for="speed">Speed: {speed}ms</label>
-          <input
-            onChange={handleChangeSpeed}
-            type="range"
-            value={speed}
-            id="speed"
-            name="speed"
-            min="10"
-            max="300"
-          ></input>
-        </div>
-      </div>
-      <div className="distance">
-        <p style={{ paddingRight: 10 }}>Path Distance: </p>
-        <p id="distance" style={{ color: "white" }}>
-          Infinity
-        </p>
       </div>
     </div>
   );

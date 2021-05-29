@@ -55,7 +55,7 @@ export class Board {
     return row <= bottom && row >= top && col <= right && col >= left;
   }
   getDimensions(numberOfRows) {
-    const navHeight = 50;
+    const navHeight = 75;
     const boarderPixelCount = 3;
     const conceptualPixelCount =
       (window.innerHeight - navHeight) / numberOfRows;
