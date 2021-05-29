@@ -302,6 +302,7 @@ export class Board {
         el.className === "deepred"
       ) {
         if (!this.grid[box].hasItem() && this.grid[box].state !== "wall") {
+          console.log("wtf");
           el.className = "unvisited";
         }
         if (this.grid[box].state !== "wall") {
@@ -311,7 +312,9 @@ export class Board {
         }
       }
       if (this.walls.includes(box) && clearWalls) {
-        el.className = "unvisited";
+        if (!this.isNode(box)) {
+          el.className = "unvisited";
+        }
         this.grid[box].state = "unvisited";
         this.walls.splice(this.walls.indexOf(box), 1);
       }
