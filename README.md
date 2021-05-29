@@ -1,53 +1,58 @@
 # Path Visualizer
 
-Visualize how path finding algorithms search and find target nodes.
-Check it out: [Path Visualizer](https://andrewbloodworth.github.io/PathVisualizer/)
+Visualize path finding algorithms.
+Start visualizing: [Path Visualizer](https://andrewbloodworth.github.io/PathVisualizer/)
 
 ## Algorithms (more to come)
 
-- Dijkstras
+- [Dijkstras](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
 
 ## Description
 
-I wanted this project to give myself and the user a visual representation of what path finding algorithims are how and how they search a graph to find the shortest path.
+The Path Visualizer is a tool that empowers it's user with an intuitive understanding of how path finding algoritms search for the shortest distance between two points (or lack thereof).
 
 ## Guide
 
 ### Basics
 
-- The start of the path will be the array icon on the left.
-- The end of the path will be the target icon on the right.
-- Move the start or end node to any place on the board by clicking and dragging.
-- Run the algorithm by clicking the green 'Run Algorithm' button in the top left of the page.
-- Clear the board by clicking the white 'Clear Board' button.
-- Add a wall to the board by clicking on an empty space.
-- Add multiple walls to the board by clicking and dragging.
-- Remove walls by clicking and/or dragging on a wall.
+- **The Board**
+  - Height (Rows) : 5-20
+  - Width (Columns) : 8-40
+- **Start and End**
+  - Start: <img src="./src/app/Images/arrow-icon--myiconfinder-23.png" alt="arrow" width="20px"/>
+  - End: <img src="./src/app/Images/realtarget.png" alt="arrow" width="20px"/>
+  - Note: Move the start or end nodes by clicking and dragging.
+- **Walls**
+  - Add a single wall by clicking on an empty box in the Board.
+  - Add/Remove multiple walls by clicking and dragging.
+- **Navigation Bar**
+  - Run Algorithm: starts visualization.
+  - Clear Board: removes all items from the Board except for the start and end nodes
 
 ### Settings
 
-- Adjust the size of the board with the first slider in 'Settings'.
-  - Size is equal to the number of rows the board contains.
-  - By default, the size will be 5.
-  - The largest size is 20 rows and will limit the number of columns to be a maximum of 40 or a minimum of 8.
-  - Maximum amount of node will be 800 and the mimimum will be 40.
-- Adjust the speed of the algoithm with the second slider in 'Settings'.
-  - The speed will regulate how fast each node is visited while running the algorithm.
-  - By default the speed is set to 100ms.
-  - The fastest will be on the far left of the slider at 10ms.
-  - The slowest will be on the far right of the slider at 300ms.
-  - I dont recommend using the slower speeds on larger boards beacause it can take a long time to find the end node. (A full sized board (800 nodes) and a speed of 300ms per node visited will take about 4 minutes).
-- View the shortest path distance
-  - By default the path will be Infinity.
-  - If a path is found it will update with the new path distance.
-  - If no paths exist then the path distance will be Infinity.
+- **Size**
+  - Description: Adjust to increase or decrease the number of rows in the Board.
+  - Default: 5 Rows
+  - Range: (5 <= Rows <= 20)
+  - Note: Columns are calculated based on window size and will be within the range (8 <= Columns <= 40)
+- **Speed**
+  - Description: Adjust to increase or decrease the time it takes to visit each node while searching for the shortest path.
+  - Default: 100ms
+  - Range: (10ms <= Speed <= 300ms)
+  - Note: A full sized Board (20 Rows x 40 Columns = 800 Nodes) and the slowest speed (300ms) will take about 4 minutes to solve. Please reload the page to terminate the search.
+- **Path Distance**
+  - Description: Displays the current path distance.
+  - Default: Infinity
+  - Note: Path Distance will be a positive integer when a path exists and Infinity otherwise.
 
 ### Solved
 
-- The board will be unsolved by default
-- Solve the board by running the algorithm.
-- When the board has been solved, move the start or end nodes to instantly calculate the path.
-- Add or remove walls to see how the path changes.
-- If you clear the board or move the start or end node to a position on the board that does not have a path, the board will become unsolved.
+- Default: unsolved
+- The Board will become solved after a path is found.
+- Once the Board is solved
+  - Move the start or end node to instantly calculate the shortest path.
+  - Add or remove walls to see how the shortest path changes.
+- If the Board is cleared or there is no path, the Board will become unsolved.
 
 Enjoy :) This was a very fun project to put together.
