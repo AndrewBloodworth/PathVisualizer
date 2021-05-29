@@ -47,7 +47,7 @@ export const Grid = ({ slider, setSlider }) => {
   return (
     <div className="grid-container" onMouseLeave={handleMouseLeave}>
       <div className="grid">
-        <table className="grid-table">
+        <table className="grid-table" id="grid-table">
           <tbody>{getRows()}</tbody>
         </table>
       </div>

@@ -62,8 +62,10 @@ export class Board {
     const verticalPixelCount = conceptualPixelCount - boarderPixelCount;
     const numberOfColumns = window.innerWidth / conceptualPixelCount;
     const innerHeight = Number(numberOfRows);
+
     let innerWidth = Math.floor(numberOfColumns) - 1;
     if (innerWidth > 40) innerWidth = 40;
+    if (innerWidth < 8) innerWidth = 8;
     const offsetHeight = Math.floor((this.height - innerHeight) / 2);
     const offsetWidth = Math.floor((this.width - innerWidth) / 2);
 
@@ -127,6 +129,15 @@ export class Board {
       `${this.speed * 5}ms`
     );
   }
+  setAnimations(keyword) {
+    if (keyword === "on") {
+      document.body.style.setProperty("--toggle", "1");
+      document.body.style.setProperty("--playState", "idle");
+    } else if (keyword === "off") {
+      document.body.style.setProperty("--toggle", "0");
+      document.body.style.setProperty("--playState", "finished");
+    }
+  }
   addRemoveWall(target) {
     let classname = target.className;
     if (
@@ -168,11 +179,30 @@ export class Board {
       this.runDijkstra();
     }
   }
+  disableGridTable(disable) {
+    const cssRoot = document.querySelector(":root");
+    if (disable) {
+      cssRoot.style.setProperty("--grid-interact", `none`);
+    } else {
+      cssRoot.style.setProperty("--grid-interact", `auto`);
+    }
+  }
 
+  disableNavBar(disable) {
+    const navItemIds = ["algo-button", "clear-button", "slider", "speed"];
+    navItemIds.forEach(
+      (id) => (document.getElementById(id).disabled = disable)
+    );
+  }
   async runDijkstra() {
+    this.disableNavBar(true);
+    this.disableGridTable(true);
     this.clearBoard(false);
     let result = await dijkstra();
-    if (!result.distance) {
+    document.getElementById("distance").innerHTML = result.distance;
+    this.disableNavBar(false);
+    this.disableGridTable(false);
+    if (result.distance === Infinity) {
       this.grid[this.start].state = "deepred";
       result.path.forEach((id) => {
         let el = document.getElementById(id);
@@ -184,34 +214,38 @@ export class Board {
 
       this.solved = false;
       return;
-    } else {
     }
     let i = 0,
       length = result.path.length;
 
     //TODO more elegant way of rotating start
-    if (result.path[0]) {
-      //start-node
-      let st = document.getElementById(this.start);
-      //2nd node in shortest path as x and y coordinates
-      let [x, y] = result.path[0].split("-");
-      //The Start of the Board as x and y coordinates
-      let [xs, ys] = this.start.split("-");
-      //Left
-      if (Number(ys) - 1 === Number(y)) {
-        st.style.transform = "rotate(180deg)";
-      }
-      //Right
-      else if (Number(ys) + 1 === Number(y)) {
-      }
-      //Down
-      else if (Number(xs) - 1 === Number(x)) {
-        st.style.transform = "rotate(-90deg)";
-      }
-      //Up
-      else if (Number(xs) + 1 === Number(x)) {
-        st.style.transform = "rotate(90deg)";
-      }
+
+    //start-node
+    let st = document.getElementById(this.start);
+    //2nd node in shortest path as x and y coordinates
+    let x, y;
+    if (!result.path[0]) {
+      [x, y] = this.end.split("-");
+    } else {
+      [x, y] = result.path[0].split("-");
+    }
+    //let [x, y] = result.path[0].split("-");
+    //The Start of the Board as x and y coordinates
+    let [xs, ys] = this.start.split("-");
+    //Left
+    if (Number(ys) - 1 === Number(y)) {
+      st.style.transform = "rotate(180deg)";
+    }
+    //Right
+    else if (Number(ys) + 1 === Number(y)) {
+    }
+    //Down
+    else if (Number(xs) - 1 === Number(x)) {
+      st.style.transform = "rotate(-90deg)";
+    }
+    //Up
+    else if (Number(xs) + 1 === Number(x)) {
+      st.style.transform = "rotate(90deg)";
     }
 
     if (this.solved) {

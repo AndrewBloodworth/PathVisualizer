@@ -1,5 +1,6 @@
 :root {
   --size: 50px;
+  --grid-interact: auto;
 }
 
 body {
@@ -96,6 +97,7 @@ main {
 .grid-table {
   border-collapse: collapse;
   border-spacing: 0;
+  pointer-events: var(--grid-interact);
 }
 
 .unvisited {
@@ -158,6 +160,7 @@ td {
 }
 
 .start-node {
+  cursor: pointer;
   background-image: url("./Images/arrow-icon--myiconfinder-23.png");
 
   background-size: contain;
@@ -187,6 +190,7 @@ td {
   animation: none !important;
 }
 .end-node {
+  cursor: pointer;
   background-image: url("./Images/targetreal.png");
   background-size: cover;
   animation-name: endNodeAnimation;
@@ -194,6 +198,7 @@ td {
   animation-play-state: var(--playState);
 }
 .wall {
+  cursor: pointer;
   background-color: rgb(13, 13, 39);
   animation-name: wallAnimation;
   animation-duration: calc(var(--toggle) * var(--animation-speed));
@@ -244,4 +249,11 @@ td {
   animation-duration: calc(var(--toggle) * var(--animation-speed-path));
   animation-play-state: var(--playState);
   */
+}
+
+.distance {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  color: white;
 }

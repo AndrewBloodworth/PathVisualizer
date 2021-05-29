@@ -15,6 +15,8 @@ export const Nav = ({ slider, setSlider }) => {
     );
   }, []);
   const handleClick = async () => {
+    board.setAnimations("on");
+    document.getElementById("distance").innerHTML = "Searching...";
     board.solved = false;
     board.runDijkstra();
   };
@@ -23,17 +25,14 @@ export const Nav = ({ slider, setSlider }) => {
     board.clearBoard(true);
   };
   const handleChange = (e) => {
-    document.body.style.setProperty("--toggle", "0");
-    document.body.style.setProperty("--playState", "finished");
+    board.setAnimations("off");
     board.removeVisited(slider);
     //If start or end node is out of window then hold slider value
     setSlider(board.manufactureGrid(e.target.value) || slider);
   };
 
   const handleMouseLeave = () => {
-    document.body.className = "";
-    document.body.style.setProperty("--toggle", "1");
-    document.body.style.setProperty("--playState", "idle");
+    board.setAnimations("on");
   };
 
   const handleChangeSpeed = ({ target }) => {
@@ -46,10 +45,14 @@ export const Nav = ({ slider, setSlider }) => {
         <h1>Path Visualizer</h1>
       </div>
       <div className="algo-button">
-        <button onClick={handleClick}>Run Algorithm</button>
+        <button onClick={handleClick} id="algo-button">
+          Run Algorithm
+        </button>
       </div>
       <div className="clear-button">
-        <button onClick={handleClear}>Clear Board</button>
+        <button onClick={handleClear} id="clear-button">
+          Clear Board
+        </button>
       </div>
       <div className="toggle">
         <div className="slider">
@@ -76,6 +79,12 @@ export const Nav = ({ slider, setSlider }) => {
             max="300"
           ></input>
         </div>
+      </div>
+      <div className="distance">
+        <p style={{ paddingRight: 10 }}>Path Distance: </p>
+        <p id="distance" style={{ color: "white" }}>
+          Infinity
+        </p>
       </div>
     </div>
   );

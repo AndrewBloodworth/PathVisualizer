@@ -13,6 +13,12 @@ export const dijkstra = async () => {
   const board = store.getState().board.board;
 
   const { walls, graph, start, end, speed } = board;
+  if (start === end) {
+    return {
+      distance: 0,
+      path: [],
+    };
+  }
   const costs = Object.assign({ end: Infinity }, graph[start].neighbors);
   const parents = { end: null };
   const processed = [];
@@ -39,7 +45,7 @@ export const dijkstra = async () => {
         children = {};
       }
       for (let n in children) {
-        if (!walls.includes(n) || walls.includes(end)) {
+        if (!walls.includes(n) || n === end) {
           let newCost = cost + children[n];
           if (!costs[n]) {
             costs[n] = newCost;
@@ -103,7 +109,7 @@ export const dijkstra = async () => {
 
   if (!parent) {
     return {
-      distance: null,
+      distance: Infinity,
       path: visited,
     };
   }
