@@ -1,71 +1,53 @@
-# Getting Started with Create React App
+# Path Visualizer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Visualize how path finding algorithms search and find target nodes.
+Check it out: [Path Visualizer](https://andrewbloodworth.github.io/PathVisualizer/)
 
-## Available Scripts
+## Algorithms (more to come)
 
-In the project directory, you can run:
+- Dijkstras
 
-### `npm start`
+## Description
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+I wanted this project to give myself and the user a visual representation of what path finding algorithims are how and how they search a graph to find the shortest path.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Guide
 
-### `npm test`
+### Basics
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- The start of the path will be the array icon on the left.
+- The end of the path will be the target icon on the right.
+- Move the start or end node to any place on the board by clicking and dragging.
+- Run the algorithm by clicking the green 'Run Algorithm' button in the top left of the page.
+- Clear the board by clicking the white 'Clear Board' button.
+- Add a wall to the board by clicking on an empty space.
+- Add multiple walls to the board by clicking and dragging.
+- Remove walls by clicking and/or dragging on a wall.
 
-### `npm run build`
+### Settings
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Adjust the size of the board with the first slider in 'Settings'.
+  - Size is equal to the number of rows the board contains.
+  - By default, the size will be 5.
+  - The largest size is 20 rows and will limit the number of columns to be a maximum of 40 or a minimum of 8.
+  - Maximum amount of node will be 800 and the mimimum will be 40.
+- Adjust the speed of the algoithm with the second slider in 'Settings'.
+  - The speed will regulate how fast each node is visited while running the algorithm.
+  - By default the speed is set to 100ms.
+  - The fastest will be on the far left of the slider at 10ms.
+  - The slowest will be on the far right of the slider at 300ms.
+  - I dont recommend using the slower speeds on larger boards beacause it can take a long time to find the end node. (A full sized board (800 nodes) and a speed of 300ms per node visited will take about 4 minutes).
+- View the shortest path distance
+  - By default the path will be Infinity.
+  - If a path is found it will update with the new path distance.
+  - If no paths exist then the path distance will be Infinity.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Solved
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- The board will be unsolved by default
+- Solve the board by running the algorithm.
+- When the board has been solved, move the start or end nodes to instantly calculate the path.
+- Add or remove walls to see how the path changes.
+- If you clear the board or move the start or end node to a position on the board that does not have a path, the board will become unsolved.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# AndrewBloodworth.github.io-PathVisualizer
+Enjoy :) This was a very fun project to put together.

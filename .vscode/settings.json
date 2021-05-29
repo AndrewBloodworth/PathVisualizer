@@ -1,0 +1,12 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "javascript.format.enable": false,
+  "editor.tokenColorCustomizations": {
+    "functions": "#9ef87a",
+    "strings": "#FFF",
+    "comments": "#E06C75",
+    "variables": "#9ac8ee",
+    "types": "#56b6C2"
+  }
+}
