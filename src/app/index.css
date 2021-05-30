@@ -6,6 +6,7 @@
   --node-cursor: grab;
   --grid-cursor: pointer;
   --font-size: 12px;
+  --visibility: hidden;
 }
 
 body {
@@ -140,6 +141,7 @@ td {
 .specs {
   color: rgb(13, 13, 39);
   font-size: var(--font-size);
+  visibility: var(--visibility);
   pointer-events: none;
   display: flex;
   justify-content: center;

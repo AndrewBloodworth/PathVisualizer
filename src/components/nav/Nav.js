@@ -6,6 +6,7 @@ export const Nav = ({ slider, setSlider }) => {
   const { board } = useSelector(selectBoard);
 
   const [speed, setSpeed] = useState(100);
+  const [checked, setChecked] = useState(false);
 
   useEffect(() => {
     document.body.style.setProperty("--visit-delay", `${100}ms`);
@@ -36,6 +37,15 @@ export const Nav = ({ slider, setSlider }) => {
       board.setAnimations("on");
     } catch (error) {}
   };
+  const handleViewDistance = ({ target }) => {
+    const cssRoot = document.querySelector(":root");
+    if (checked) {
+      cssRoot.style.setProperty("--visibility", `hidden`);
+    } else {
+      cssRoot.style.setProperty("--visibility", `visible`);
+    }
+    setChecked(checked ? false : true);
+  };
 
   const handleChangeSpeed = ({ target }) => {
     setSpeed(target.value);
@@ -55,6 +65,14 @@ export const Nav = ({ slider, setSlider }) => {
         <button onClick={handleClear} id="clear-button">
           Clear Board
         </button>
+      </div>
+      <div className="view-distance">
+        <input
+          type="checkbox"
+          value={checked}
+          onClick={handleViewDistance}
+          id="view-distance"
+        />
       </div>
       <div className="settings-container">
         <h2 style={{ margin: 0 }}>Settings:</h2>
