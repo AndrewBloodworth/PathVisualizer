@@ -160,6 +160,7 @@ export class Board {
       this.grid[target.id].distance = "";
     } else if (target.className === "wall") {
       this.walls.splice(this.walls.indexOf(target.id), 1);
+      specEl.innerHTML = "";
       target.className = "unvisited";
       this.grid[target.id].state = "unvisited";
     }
@@ -178,8 +179,13 @@ export class Board {
       this.grid[id].items.unshift("start-node");
       this.start = id;
     } else if (name === "end-node") {
+      let el = document.getElementById(this.start);
+      if (el.style.transform) {
+        el.style = "";
+      }
       this.grid[this.end].items.shift();
       this.grid[id].items.unshift("end-node");
+
       this.end = id;
     }
     if (this.solved) {
@@ -189,8 +195,10 @@ export class Board {
   disableGridTable(disable) {
     const cssRoot = document.querySelector(":root");
     if (disable) {
+      cssRoot.style.setProperty("--grid-cursor", `wait`);
       cssRoot.style.setProperty("--grid-interact", `none`);
     } else {
+      cssRoot.style.setProperty("--grid-cursor", `pointer`);
       cssRoot.style.setProperty("--grid-interact", `auto`);
     }
   }
@@ -202,6 +210,7 @@ export class Board {
     );
   }
   async runDijkstra() {
+    debugger;
     this.disableNavBar(true);
     this.disableGridTable(true);
     this.clearBoard(false);
@@ -282,8 +291,10 @@ export class Board {
   }
   removeVisited(numberOfRows) {
     for (let box in this.grid) {
-      let id = this.grid[box].id;
-      if (!this.nodeInBoundary(id, numberOfRows) && !this.walls.includes(id)) {
+      if (
+        !this.nodeInBoundary(box, numberOfRows) &&
+        !this.walls.includes(box)
+      ) {
         this.grid[box].state = "unvisited";
         this.grid[box].distance = "";
       }
@@ -304,7 +315,6 @@ export class Board {
         el.className === "deepred"
       ) {
         if (!this.grid[box].hasItem() && this.grid[box].state !== "wall") {
-          console.log("wtf");
           el.className = "unvisited";
         }
         if (this.grid[box].state !== "wall") {

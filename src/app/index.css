@@ -3,6 +3,9 @@
   --size: 50px;
   --grid-interact: auto;
   --nav-height: 75px;
+  --node-cursor: grab;
+  --grid-cursor: pointer;
+  --font-size: 12px;
 }
 
 body {
@@ -116,6 +119,7 @@ input {
   justify-content: space-evenly;
   width: 100%;
   height: 100%;
+  cursor: var(--grid-cursor);
 }
 .grid-table {
   border-collapse: collapse;
@@ -124,6 +128,7 @@ input {
 }
 
 .unvisited {
+  cursor: var(--grid-cursor);
   background-color: white;
 }
 
@@ -131,10 +136,10 @@ td {
   border: 1px solid lightblue;
   height: var(--size);
   width: var(--size);
-  font-size: 8px;
 }
 .specs {
   color: rgb(13, 13, 39);
+  font-size: var(--font-size);
   pointer-events: none;
   display: flex;
   justify-content: center;
@@ -192,7 +197,8 @@ td {
 }
 
 .start-node {
-  cursor: pointer;
+  border-radius: var(--size);
+  cursor: var(--node-cursor);
   background-image: url("./Images/arrow-icon--myiconfinder-23.png");
 
   background-size: contain;
@@ -222,7 +228,7 @@ td {
   animation: none !important;
 }
 .end-node {
-  cursor: pointer;
+  cursor: var(--node-cursor);
   background-image: url("./Images/targetreal.png");
   background-size: cover;
   animation-name: endNodeAnimation;
@@ -230,13 +236,14 @@ td {
   animation-play-state: var(--playState);
 }
 .wall {
-  cursor: pointer;
+  cursor: var(--grid-cursor);
   background-color: rgb(13, 13, 39);
   animation-name: wallAnimation;
   animation-duration: calc(var(--toggle) * var(--animation-speed));
   animation-play-state: var(--playState);
 }
 .path {
+  cursor: var(--grid-cursor);
   background-color: rgb(238, 228, 91);
   border-color: rgb(238, 228, 91);
   animation-name: wallAnimation;
@@ -244,6 +251,7 @@ td {
   animation-play-state: var(--playState);
 }
 .visited {
+  cursor: var(--grid-cursor);
   background-color: rgba(247, 233, 46, 0.75);
   animation-name: visitedStartNodeBlueAnimation;
   animation-duration: calc(var(--toggle) * var(--animation-speed-visited));
@@ -252,9 +260,11 @@ td {
   animation-delay: var(--visit-delay);
 }
 .visited-immediate {
+  cursor: var(--grid-cursor);
   background-color: rgba(0, 190, 218, 0.75);
 }
 .path-immediate {
+  cursor: var(--grid-cursor);
   background-color: rgb(238, 228, 91);
   border-color: rgb(238, 228, 91);
 }
@@ -271,6 +281,7 @@ td {
 }
 
 .deepred {
+  cursor: var(--grid-cursor);
   background-color: rgb(255, 0, 55);
   animation-name: deepRedAnimation;
   animation-duration: calc(var(--toggle) * var(--animation-speed-path));

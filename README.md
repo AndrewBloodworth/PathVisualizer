@@ -1,6 +1,6 @@
 # Path Visualizer
 
-[Visualize](https://andrewbloodworth.github.io/PathVisualizer/) path finding algorithms.
+[Path Visualizer](https://andrewbloodworth.github.io/PathVisualizer/)
 
 ## Algorithms (more to come)
 
@@ -8,7 +8,7 @@
 
 ## Description
 
-The Path Visualizer is a tool that empowers it's user with an intuitive understanding of how path finding algoritms search for the shortest distance between two points (or lack thereof).
+The Path Visualizer displays a 2D gird of Nodes with ranging (Rows) : 5-20 and (Columns) : 8-40 inclusive, giving control to the size and speed of each path.
 
 ## Guide
 

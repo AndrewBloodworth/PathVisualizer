@@ -94,6 +94,7 @@ export const dijkstra = async () => {
         let pathName = !parents[end] ? "deepred" : "visited-immediate";
         if (el) {
           specEl.innerHTML = v !== start ? graph[v].getSpecs() : "";
+
           el.className = pathName;
           graph[v].state = pathName;
         }

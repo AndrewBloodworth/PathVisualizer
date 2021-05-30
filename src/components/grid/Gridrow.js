@@ -15,12 +15,16 @@ export const Gridrow = ({
 
   const handleMouseDown = (e) => {
     e.preventDefault();
+    const cssRoot = document.querySelector(":root");
+    cssRoot.style.setProperty("--node-cursor", `grabbing`);
     if (board.isNode(e.target.id))
       setNode({ currentlyMoving: true, type: e.target.className });
     board.addRemoveWall(e.target);
     setMouseDown(true);
   };
   const handleMouseUp = () => {
+    const cssRoot = document.querySelector(":root");
+    cssRoot.style.setProperty("--node-cursor", `grab`);
     setNode({ ...node, currentlyMoving: false });
     setMouseDown(false);
   };

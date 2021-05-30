@@ -25,7 +25,6 @@ export const Nav = ({ slider, setSlider }) => {
     board.clearBoard(true);
   };
   const handleChange = (e) => {
-    console.log(board.grid);
     board.setAnimations("off");
     board.removeVisited(slider);
     //If start or end node is out of window then hold slider value
