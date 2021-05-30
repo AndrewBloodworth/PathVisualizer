@@ -19,7 +19,7 @@ The Path Visualizer displays a 2D gird of Nodes with ranging (Rows) : 5-20 and (
   - Width (Columns) : 8-40
 - **Start and End**
   - Start: <img src="./src/app/Images/arrow-icon--myiconfinder-23.png" alt="arrow" width="20px"/>
-  - End: <img src="./src/app/Images/realtarget.png" alt="arrow" width="20px"/>
+  - End: <img src="./src/app/Images/targetreal.png" alt="arrow" width="20px"/>
   - Note: Move the start or end nodes by clicking and dragging.
 - **Walls**
   - Add a single wall by clicking on an empty box in the Board.
