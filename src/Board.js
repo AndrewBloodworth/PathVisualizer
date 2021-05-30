@@ -157,6 +157,7 @@ export class Board {
       target.className = "wall";
       specEl.innerHTML = "";
       this.grid[target.id].state = "wall";
+      this.grid[target.id].distance = "";
     } else if (target.className === "wall") {
       this.walls.splice(this.walls.indexOf(target.id), 1);
       target.className = "unvisited";
