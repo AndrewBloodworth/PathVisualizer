@@ -1,7 +1,6 @@
 # Path Visualizer
 
-Visualize path finding algorithms.
-Start visualizing: [Path Visualizer](https://andrewbloodworth.github.io/PathVisualizer/)
+[Visualize](https://andrewbloodworth.github.io/PathVisualizer/) path finding algorithms.
 
 ## Algorithms (more to come)
 

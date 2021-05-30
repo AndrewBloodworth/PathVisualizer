@@ -290,6 +290,7 @@ export class Board {
     }
   }
   clearBoard(clearWalls) {
+    document.getElementById("distance").innerHTML = "Infinity";
     for (let box in this.graph) {
       const el = document.getElementById(box);
       const specEl = document.getElementById(`specs-${box}`);
