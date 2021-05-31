@@ -77,13 +77,15 @@ export class Board {
   }
 
   autoSolve(type, id) {
-    if (type === "wall") {
-      if (this.solved && !this.isNode(id)) {
-        this.runDijkstra();
-      }
-    } else {
-      if (this.solved) {
-        this.runDijkstra();
+    if (!this.domController.disabled) {
+      if (type === "wall") {
+        if (this.solved && !this.isNode(id)) {
+          this.runDijkstra();
+        }
+      } else {
+        if (this.solved) {
+          this.runDijkstra();
+        }
       }
     }
   }
@@ -180,7 +182,7 @@ export class Board {
     const verticalPixelCount = conceptualPixelCount - boarderPixelCount;
     const numberOfColumns = window.innerWidth / conceptualPixelCount;
     const innerHeight = Number(numberOfRows);
-
+    //const innerWidth = Math.floor(numberOfColumns);
     let innerWidth = Math.floor(numberOfColumns) - 1;
     if (innerWidth > 40) innerWidth = 40;
     if (innerWidth < 8) innerWidth = 8;

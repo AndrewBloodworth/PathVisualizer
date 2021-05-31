@@ -1,6 +1,7 @@
 export class DOMController {
   constructor(board) {
     this.board = board;
+    this.disabled = false;
   }
   assignGraphOfSize(numberOfRows) {
     const { verticalPixelCount } = this.board.getDimensions(numberOfRows);
@@ -8,10 +9,12 @@ export class DOMController {
     cssRoot.style.setProperty("--size", `${verticalPixelCount}px`);
   }
   disableInteraction(disable) {
+    this.disabled = disable;
+    console.log(this.disabled);
     //Disable Grid Table
     const cssRoot = document.querySelector(":root");
     if (disable) {
-      cssRoot.style.setProperty("--grid-cursor", `wait`);
+      cssRoot.style.setProperty("--grid-cursor", `default`);
       cssRoot.style.setProperty("--grid-interact", `none`);
     } else {
       cssRoot.style.setProperty("--grid-cursor", `pointer`);

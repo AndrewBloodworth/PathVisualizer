@@ -43,30 +43,35 @@ export const Nav = ({ slider, setSlider }) => {
       <div className="nav-title">
         <h1>Path Visualizer</h1>
       </div>
-      <div className="algo-button">
-        <button onClick={handleClick} id="algo-button">
-          Run Algorithm
-        </button>
-      </div>
-      <div className="clear-button">
-        <button onClick={handleClear} id="clear-button">
-          Clear Board
-        </button>
-      </div>
-      <div className="view-distance">
-        <label>Show Distances</label>
-        <input
-          type="checkbox"
-          value={checked}
-          onClick={handleViewDistance}
-          id="view-distance"
-        />
+      <div className="controls">
+        <div className="algo-button">
+          <button onClick={handleClick} id="algo-button">
+            <strong>Run</strong>
+          </button>
+          <h3></h3>
+        </div>
+        <div className="clear-button">
+          <button onClick={handleClear} id="clear-button">
+            <strong>Clear</strong>
+          </button>
+        </div>
+        <div className="view-distance">
+          <input
+            type="checkbox"
+            value={checked}
+            onClick={handleViewDistance}
+            id="view-distance"
+          />
+          <label>Show Distances</label>
+        </div>
       </div>
       <div className="settings-container">
-        <h2 style={{ margin: 0 }}>Settings:</h2>
         <div className="settings">
+          <h2 id="settings-title" style={{ margin: 0 }}>
+            Settings:
+          </h2>
           <div className="slider">
-            <label for="slider" style={{ width: 61 }}>
+            <label for="slider" style={{ width: 200 }}>
               Rows: {slider}
             </label>
             <input
@@ -74,13 +79,12 @@ export const Nav = ({ slider, setSlider }) => {
               type="range"
               value={slider}
               id="slider"
-              name="volume"
               min="5"
               max="20"
             ></input>
           </div>
           <div className="speed">
-            <label for="speed" style={{ width: 95 }}>
+            <label for="speed" style={{ width: 200 }}>
               Speed: {speed}ms
             </label>
             <input
@@ -93,14 +97,13 @@ export const Nav = ({ slider, setSlider }) => {
               max="300"
             ></input>
           </div>
-          <div className="distance">
-            <p style={{ paddingRight: 10 }}>Path Distance: </p>
-            <p id="distance" style={{ width: 80, textAlign: "center" }}>
-              Infinity
-            </p>
-          </div>
         </div>
-        <div className="explanation"></div>
+        <div className="distance">
+          <p style={{ paddingRight: 10 }}>Path Distance: </p>
+          <p id="distance" style={{ width: 80, textAlign: "center" }}>
+            Infinity
+          </p>
+        </div>
       </div>
     </div>
   );
