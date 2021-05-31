@@ -15,34 +15,31 @@ export const Gridrow = ({
 
   const handleMouseDown = (e) => {
     e.preventDefault();
-    const cssRoot = document.querySelector(":root");
-    cssRoot.style.setProperty("--node-cursor", `grabbing`);
+    board.domController.grabNode("grabbing");
     if (board.isNode(e.target.id))
-      setNode({ currentlyMoving: true, type: e.target.className });
+      setNode({ currentlyMoving: true, type: e.target });
     board.addRemoveWall(e.target);
     setMouseDown(true);
   };
   const handleMouseUp = () => {
-    const cssRoot = document.querySelector(":root");
-    cssRoot.style.setProperty("--node-cursor", `grab`);
+    board.domController.grabNode("grab");
     setNode({ ...node, currentlyMoving: false });
     setMouseDown(false);
   };
   const handleMouseEnter = ({ target }) => {
     if (node.currentlyMoving) {
-      board.placeNode(node.type, target.id);
-      setNode({ ...node });
+      board.placeNode(node.type.className, node.type.id, target.id);
+      setNode({ ...node, type: target });
     } else if (mouseDown) board.addRemoveWall(target);
   };
 
-  const dimensions = board.getDimensions(slider);
-  return [...Array(dimensions.innerWidth).keys()].map((col) => {
-    let id = `${currentRow}-${col + dimensions.offsetWidth}`;
+  const { innerWidth, offsetWidth } = board.getDimensions(slider);
+  return [...Array(innerWidth).keys()].map((col) => {
+    let id = `${currentRow}-${col + offsetWidth}`;
     board.graph[id] = board.grid[id];
-    let cName =
-      board.grid[id].items.length > 0
-        ? board.grid[id].items[0]
-        : board.grid[id].state;
+    let cName = board.grid[id].hasItem()
+      ? board.grid[id].items[0]
+      : board.grid[id].state;
     return (
       <td
         key={col}

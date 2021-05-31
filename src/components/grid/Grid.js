@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setBoard, selectBoard } from "./boardSlice";
 import { Gridrow } from "./Gridrow";
-import { Board } from "../../Board";
+import { Board } from "../../Classes/Board";
 
 export const Grid = ({ slider, setSlider }) => {
   const { board } = useSelector(selectBoard);
@@ -12,8 +12,8 @@ export const Grid = ({ slider, setSlider }) => {
 
   useEffect(() => {
     let board = new Board();
-    board.manufactureGraph();
-    board.assignGridOfSize(5);
+    board.manufactureGrid();
+    board.domController.assignGraphOfSize(slider);
     dispatch(setBoard(board));
   }, [dispatch]);
   const handleMouseLeave = (e) => {
@@ -28,12 +28,12 @@ export const Grid = ({ slider, setSlider }) => {
     );
   }
   const getRows = () => {
-    const dimensions = board.getDimensions(slider);
-    return [...Array(dimensions.innerHeight).keys()].map((row) => (
+    const { innerHeight, offsetHeight } = board.getDimensions(slider);
+    return [...Array(innerHeight).keys()].map((row) => (
       <tr key={row} id={`row-${row}`}>
         <Gridrow
           key={row}
-          currentRow={row + dimensions.offsetHeight}
+          currentRow={row + offsetHeight}
           mouseDown={mouseDown}
           setMouseDown={setMouseDown}
           node={node}

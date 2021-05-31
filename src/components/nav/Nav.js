@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectBoard } from "../grid/boardSlice";
 
@@ -6,18 +6,11 @@ export const Nav = ({ slider, setSlider }) => {
   const { board } = useSelector(selectBoard);
 
   const [speed, setSpeed] = useState(100);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
 
-  useEffect(() => {
-    document.body.style.setProperty("--visit-delay", `${100}ms`);
-    document.body.style.setProperty(
-      "--animation-speed-visited",
-      `${100 * 5}ms`
-    );
-  }, []);
   const handleClick = async () => {
-    board.setAnimations("on");
-    document.getElementById("distance").innerHTML = "Searching...";
+    board.domController.setAnimations("on");
+    board.domController.updatePathDistance("Searching...");
     board.solved = false;
     board.runDijkstra();
   };
@@ -26,24 +19,18 @@ export const Nav = ({ slider, setSlider }) => {
     board.clearBoard(true);
   };
   const handleChange = (e) => {
-    board.setAnimations("off");
+    board.domController.setAnimations("off");
     board.removeVisited(slider);
-    //If start or end node is out of window then hold slider value
-    setSlider(board.manufactureGrid(e.target.value) || slider);
+    setSlider(board.manufactureGraph(e.target.value) || slider);
   };
 
   const handleMouseLeave = () => {
     try {
-      board.setAnimations("on");
+      board.domController.setAnimations("on");
     } catch (error) {}
   };
   const handleViewDistance = ({ target }) => {
-    const cssRoot = document.querySelector(":root");
-    if (checked) {
-      cssRoot.style.setProperty("--visibility", `hidden`);
-    } else {
-      cssRoot.style.setProperty("--visibility", `visible`);
-    }
+    board.domController.toggleDistances(checked);
     setChecked(checked ? false : true);
   };
 
@@ -67,6 +54,7 @@ export const Nav = ({ slider, setSlider }) => {
         </button>
       </div>
       <div className="view-distance">
+        <label>Show Distances</label>
         <input
           type="checkbox"
           value={checked}

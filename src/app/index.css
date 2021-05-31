@@ -14,8 +14,8 @@ body {
   --playState: "idle";
   --animation-speed: 0.5s;
   --animation-speed-path: 0.5s;
-  --animation-speed-visited: 1s;
-  --visit-delay: 0.1s;
+  --animation-speed-visited: 500ms;
+  --visit-delay: 100ms;
 }
 
 html,
@@ -36,7 +36,7 @@ main {
 .nav-title {
   color: white;
   margin: 0 10px;
-  width: 300px;
+  width: 350px;
 }
 .clear-button {
   color: white;
@@ -60,11 +60,16 @@ main {
 .algo-button button {
   color: white;
   background-color: rgb(61, 156, 112);
+
   margin: 5px;
   padding: 5px;
   border-radius: 10px;
   border: none;
   cursor: pointer;
+}
+.view-distance {
+  font-size: 10px;
+  color: white;
 }
 .settings-container {
   display: flex;
@@ -80,10 +85,9 @@ main {
 .settings {
   display: flex;
   justify-content: space-evenly;
-  margin-left: 30px;
+  margin-left: 100px;
   color: white;
   height: 4px;
-  width: 100%;
 }
 .slider {
   display: flex;
