@@ -31,12 +31,19 @@ main {
   align-items: center;
   width: 100%;
   height: var(--nav-height);
-  background-color: rgb(18, 40, 48);
+  background-color: rgb(3, 36, 43);
 }
 .nav-title {
+  display: flex;
+  align-items: center;
   color: white;
   margin: 0 10px;
   width: 350px;
+  height: 100%;
+}
+.nav-title h1 {
+  font-size: 25px;
+  margin: auto;
 }
 
 .controls {
@@ -46,6 +53,7 @@ main {
   width: fit-content;
   padding: 5px;
   border: 1px solid white;
+  border-radius: 10px;
 }
 .clear-button {
   background-color: transparent;

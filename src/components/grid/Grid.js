@@ -4,16 +4,16 @@ import { setBoard, selectBoard } from "./boardSlice";
 import { Gridrow } from "./Gridrow";
 import { Board } from "../../Classes/Board";
 
-export const Grid = ({ slider, setSlider }) => {
-  const { board } = useSelector(selectBoard);
+export const Grid = ({ numberOfRows }) => {
   const dispatch = useDispatch();
+  const { board } = useSelector(selectBoard);
   const [mouseDown, setMouseDown] = useState(false);
-  const [node, setNode] = useState({ target: null, bool: false });
+  const [node, setNode] = useState({});
 
   useEffect(() => {
-    let board = new Board();
+    const board = new Board();
     board.manufactureGrid();
-    board.domController.assignGraphOfSize(slider);
+    board.dom.assignGraphOfSize(numberOfRows);
     dispatch(setBoard(board));
   }, [dispatch]);
   const handleMouseLeave = (e) => {
@@ -27,23 +27,7 @@ export const Grid = ({ slider, setSlider }) => {
       </div>
     );
   }
-  const getRows = () => {
-    const { innerHeight, offsetHeight } = board.getDimensions(slider);
-    return [...Array(innerHeight).keys()].map((row) => (
-      <tr key={row} id={`row-${row}`}>
-        <Gridrow
-          key={row}
-          currentRow={row + offsetHeight}
-          mouseDown={mouseDown}
-          setMouseDown={setMouseDown}
-          node={node}
-          setNode={setNode}
-          slider={slider}
-          setSlider={setSlider}
-        />
-      </tr>
-    ));
-  };
+  const { innerHeight, offsetHeight } = board.getDimensions(numberOfRows);
   return (
     <div className="grid-container">
       <div className="grid">
@@ -52,7 +36,21 @@ export const Grid = ({ slider, setSlider }) => {
           id="grid-table"
           onMouseLeave={handleMouseLeave}
         >
-          <tbody>{getRows()}</tbody>
+          <tbody>
+            {[...Array(innerHeight).keys()].map((row) => (
+              <tr key={row} id={`row-${row}`}>
+                <Gridrow
+                  key={row}
+                  currentRow={row + offsetHeight}
+                  mouseDown={mouseDown}
+                  setMouseDown={setMouseDown}
+                  node={node}
+                  setNode={setNode}
+                  numberOfRows={numberOfRows}
+                />
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>

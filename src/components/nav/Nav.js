@@ -2,35 +2,35 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectBoard } from "../grid/boardSlice";
 
-export const Nav = ({ slider, setSlider }) => {
+export const Nav = ({ numberOfRows, setNumberOfRows }) => {
   const { board } = useSelector(selectBoard);
 
   const [speed, setSpeed] = useState(100);
   const [checked, setChecked] = useState(true);
 
   const handleClick = async () => {
-    board.domController.setAnimations("on");
-    board.domController.updatePathDistance("Searching...");
+    board.dom.setAnimations("on");
+    board.dom.updatePathDistance("Searching...");
     board.solved = false;
-    board.runDijkstra();
+    board.runAlgorithm();
   };
   const handleClear = () => {
     board.solved = false;
     board.clearBoard(true);
   };
   const handleChange = (e) => {
-    board.domController.setAnimations("off");
-    board.removeVisited(slider);
-    setSlider(board.manufactureGraph(e.target.value) || slider);
+    board.dom.setAnimations("off");
+    board.removeVisited(numberOfRows);
+    setNumberOfRows(board.manufactureGraph(e.target.value) || numberOfRows);
   };
 
   const handleMouseLeave = () => {
     try {
-      board.domController.setAnimations("on");
+      board.dom.setAnimations("on");
     } catch (error) {}
   };
   const handleViewDistance = ({ target }) => {
-    board.domController.toggleDistances(checked);
+    board.dom.toggleDistances(checked);
     setChecked(checked ? false : true);
   };
 
@@ -72,12 +72,12 @@ export const Nav = ({ slider, setSlider }) => {
           </h2>
           <div className="slider">
             <label for="slider" style={{ width: 200 }}>
-              Rows: {slider}
+              Rows: {numberOfRows}
             </label>
             <input
               onChange={handleChange}
               type="range"
-              value={slider}
+              value={numberOfRows}
               id="slider"
               min="5"
               max="20"

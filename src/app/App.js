@@ -4,11 +4,11 @@ import { Grid } from "../components/grid/Grid";
 import "./index.css";
 
 export const App = () => {
-  const [slider, setSlider] = useState(5);
+  const [numberOfRows, setNumberOfRows] = useState(5);
   return (
     <main className="App">
-      <Nav slider={slider} setSlider={setSlider} />
-      <Grid slider={slider} setSlider={setSlider} />
+      <Nav numberOfRows={numberOfRows} setNumberOfRows={setNumberOfRows} />
+      <Grid numberOfRows={numberOfRows} />
     </main>
   );
 };

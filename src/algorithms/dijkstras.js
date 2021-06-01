@@ -12,7 +12,7 @@ const lowestCostNode = (costs, processed) => {
 export const dijkstra = async () => {
   const board = store.getState().board.board;
 
-  const { walls, graph, start, end, speed } = board;
+  const { walls, graph, start, end } = board;
   if (start === end) {
     return {
       distance: 0,
@@ -65,12 +65,7 @@ export const dijkstra = async () => {
         }
       }
 
-      if (
-        graph[node] &&
-        !board.isNode(node) &&
-        !board.isNode(node) &&
-        !walls.includes(node)
-      ) {
+      if (graph[node] && !board.isNode(node) && !walls.includes(node)) {
         visitedNodes.push(node);
         graph[node].distance = costs[node];
       }
@@ -86,10 +81,10 @@ export const dijkstra = async () => {
     }
 
     if (board.solved) {
-      board.domController.printVisited(visitedNodes, parents[end]);
+      board.dom.printVisited(visitedNodes, parents[end]);
       resolve(visitedNodes);
     } else {
-      board.domController.animateVisited(visitedNodes, resolve);
+      board.dom.animateVisited(visitedNodes, resolve);
     }
   });
 

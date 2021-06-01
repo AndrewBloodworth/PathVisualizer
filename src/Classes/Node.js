@@ -15,9 +15,15 @@ export class Node {
   isNotWall() {
     return this.state !== "wall";
   }
+  getDistance() {
+    return this.distance;
+  }
   addWall() {
     this.state = "wall";
-    this.distance = "";
+    this.setDistance("");
+  }
+  setDistance(distance) {
+    this.distance = distance;
   }
   removeWall() {
     this.state = "unvisited";
@@ -30,7 +36,7 @@ export class Node {
   }
   clear() {
     this.state = "unvisited";
-    this.distance = "";
+    this.setDistance("");
   }
   changeState(newState) {
     this.state = newState;

@@ -1,10 +1,10 @@
-import { dijkstra } from "../algorithms/dijkstras";
-import { DOMController } from "./DOMController";
 import { Node } from "./Node";
+import { DOMController } from "./DOMController";
+import { Algorithm } from "../algorithms/Algorithm";
 
 export class Board {
   constructor() {
-    this.domController = {};
+    this.dom = {};
     this.start = "0-0";
     this.end = "0-0";
     this.width = 0;
@@ -29,24 +29,23 @@ export class Board {
         this.grid[id] = new Node(id, neighbors, this.nodetype(id));
       }
     }
-    this.domController = new DOMController(this);
+    this.dom = new DOMController(this);
   }
   manufactureGraph(numberOfRows) {
-    const dom = this.domController;
-    dom.clearStartStyle();
+    this.dom.clearStartStyle();
     if (
       this.nodeInBoundary(this.start, numberOfRows) &&
       this.nodeInBoundary(this.end, numberOfRows)
     ) {
       this.graph = {};
-      dom.assignGraphOfSize(numberOfRows);
+      this.dom.assignGraphOfSize(numberOfRows);
       return numberOfRows;
     }
   }
   addRemoveWall(target) {
     const classname = target.className;
     const node = this.grid[target.id];
-    const dom = this.domController;
+
     if (
       classname === "unvisited" ||
       classname === "visited" ||
@@ -57,16 +56,16 @@ export class Board {
     ) {
       this.walls.push(target.id);
       node.addWall();
-      dom.addWall(target);
+      this.dom.addWall(target);
     } else if (target.className === "wall") {
       this.walls.splice(this.walls.indexOf(target.id), 1);
       node.removeWall();
-      dom.removeWall(target);
+      this.dom.removeWall(target);
     }
     this.autoSolve("wall", target.id);
   }
   placeNode(name, prevId, newId) {
-    this.domController.clearTransform(prevId);
+    this.dom.clearTransform(prevId);
     const prevNode = this.grid[prevId];
     const newNode = this.grid[newId];
     prevNode.shiftItems();
@@ -77,49 +76,48 @@ export class Board {
   }
 
   autoSolve(type, id) {
-    if (!this.domController.disabled) {
+    if (!this.dom.disabled) {
       if (type === "wall") {
         if (this.solved && !this.isNode(id)) {
-          this.runDijkstra();
+          this.runAlgorithm();
         }
       } else {
         if (this.solved) {
-          this.runDijkstra();
+          this.runAlgorithm();
         }
       }
     }
   }
-  async runDijkstra() {
-    const dom = this.domController;
-    dom.disableInteraction(true);
-    this.clearBoard(false);
-    let result = await dijkstra();
-    dom.updatePathDistance(result.distance);
-    dom.disableInteraction(false);
-    if (result.distance === Infinity) {
+  async runAlgorithm() {
+    const algo = new Algorithm(this);
+    algo.init();
+
+    const results = await algo.definePath();
+    const { distance, path } = results();
+
+    if (distance === Infinity) {
       const startNode = this.grid[this.start];
-      if (startNode.isNotWall()) startNode.changeState("deepred");
-      result.path.forEach((id) => {
+      if (startNode.isNotWall()) {
+        startNode.changeState("deepred");
+      }
+      path.forEach((id) => {
         const node = this.grid[id];
-        dom.noPathFound(id);
+        this.dom.noPathFound(id);
         node.changeState("deepred");
       });
       this.solved = false;
       return;
     }
 
-    dom.pointToPath(result.path[0]);
-
     if (this.solved) {
-      dom.printPath(result.path);
+      this.dom.printPath(path);
     } else {
       this.solved = true;
-      dom.animatePath(result.path);
+      this.dom.animatePath(path);
     }
   }
   clearBoard(clearWalls) {
-    const dom = this.domController;
-    dom.updatePathDistance("Infinity");
+    this.dom.updatePathDistance("Infinity");
     for (let id in this.graph) {
       const node = this.grid[id];
       if (
@@ -130,13 +128,13 @@ export class Board {
         node.state === "deepred"
       ) {
         if (!node.hasItem()) {
-          dom.makeUnvisited(id);
+          this.dom.makeUnvisited(id);
         }
         node.clear();
-        dom.removeSpec(id);
+        this.dom.removeSpec(id);
       }
       if (this.walls.includes(id) && clearWalls) {
-        dom.clearWalls(id);
+        this.dom.clearWalls(id);
         node.removeWall();
         this.walls.splice(this.walls.indexOf(id), 1);
       }
@@ -152,7 +150,7 @@ export class Board {
   }
   updateSpeed(speedValue) {
     this.speed = speedValue;
-    this.domController.updateAnimationSpeed();
+    this.dom.updateAnimationSpeed();
   }
   assignNodes(width, height) {
     const vertMiddle = Math.floor(height / 2) - 1;
@@ -182,7 +180,6 @@ export class Board {
     const verticalPixelCount = conceptualPixelCount - boarderPixelCount;
     const numberOfColumns = window.innerWidth / conceptualPixelCount;
     const innerHeight = Number(numberOfRows);
-    //const innerWidth = Math.floor(numberOfColumns);
     let innerWidth = Math.floor(numberOfColumns) - 1;
     if (innerWidth > 40) innerWidth = 40;
     if (innerWidth < 8) innerWidth = 8;

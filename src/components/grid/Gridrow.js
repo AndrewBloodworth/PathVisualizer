@@ -8,21 +8,20 @@ export const Gridrow = ({
   node,
   setNode,
   currentRow,
-  slider,
-  setSlider,
+  numberOfRows,
 }) => {
   const { board } = useSelector(selectBoard);
 
   const handleMouseDown = (e) => {
     e.preventDefault();
-    board.domController.grabNode("grabbing");
+    board.dom.grabNode("grabbing");
     if (board.isNode(e.target.id))
       setNode({ currentlyMoving: true, type: e.target });
     board.addRemoveWall(e.target);
     setMouseDown(true);
   };
   const handleMouseUp = () => {
-    board.domController.grabNode("grab");
+    board.dom.grabNode("grab");
     setNode({ ...node, currentlyMoving: false });
     setMouseDown(false);
   };
@@ -33,7 +32,7 @@ export const Gridrow = ({
     } else if (mouseDown) board.addRemoveWall(target);
   };
 
-  const { innerWidth, offsetWidth } = board.getDimensions(slider);
+  const { innerWidth, offsetWidth } = board.getDimensions(numberOfRows);
   return [...Array(innerWidth).keys()].map((col) => {
     let id = `${currentRow}-${col + offsetWidth}`;
     board.graph[id] = board.grid[id];
