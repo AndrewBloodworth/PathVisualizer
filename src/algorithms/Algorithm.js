@@ -84,8 +84,8 @@ export class Algorithm {
 
     const visited = await this.getVisited();
     let parent = this.parents[this.board.end];
-
-    if (!parent) {
+    if (this.board.start === this.board.end) {
+    } else if (!parent) {
       distance = Infinity;
       path = visited;
     } else {
