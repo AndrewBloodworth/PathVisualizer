@@ -7,6 +7,7 @@ export const Nav = ({ numberOfRows, setNumberOfRows }) => {
 
   const [speed, setSpeed] = useState(100);
   const [checked, setChecked] = useState(true);
+  const [active, setActive] = useState(false);
 
   const handleClick = async () => {
     board.dom.setAnimations("on");
@@ -38,6 +39,13 @@ export const Nav = ({ numberOfRows, setNumberOfRows }) => {
     setSpeed(target.value);
     board.updateSpeed(target.value);
   };
+
+  const handleEnterGear = ({ target }) => {
+    setActive(true);
+  };
+  const handleMouseLeaveSettings = () => {
+    setActive(false);
+  };
   return (
     <div className="nav" id="nav" onMouseLeave={handleMouseLeave}>
       <div className="nav-title">
@@ -48,54 +56,72 @@ export const Nav = ({ numberOfRows, setNumberOfRows }) => {
           <button onClick={handleClick} id="algo-button">
             <strong>Run</strong>
           </button>
-          <h3></h3>
         </div>
         <div className="clear-button">
           <button onClick={handleClear} id="clear-button">
             <strong>Clear</strong>
           </button>
         </div>
-        <div className="view-distance">
-          <input
-            type="checkbox"
-            value={checked}
-            onClick={handleViewDistance}
-            id="view-distance"
-          />
-          <label>Show Distances</label>
-        </div>
       </div>
       <div className="settings-container">
-        <div className="settings">
-          <h2 id="settings-title" style={{ margin: 0 }}>
-            Settings:
-          </h2>
-          <div className="slider">
-            <label for="slider" style={{ width: 200 }}>
-              Rows: {numberOfRows}
-            </label>
-            <input
-              onChange={handleChange}
-              type="range"
-              value={numberOfRows}
-              id="slider"
-              min="5"
-              max="20"
-            ></input>
-          </div>
-          <div className="speed">
-            <label for="speed" style={{ width: 200 }}>
-              Speed: {speed}ms
-            </label>
-            <input
-              onChange={handleChangeSpeed}
-              type="range"
-              value={speed}
-              id="speed"
-              name="speed"
-              min="10"
-              max="300"
-            ></input>
+        <div className="settings-gear">
+          <div
+            className="gear"
+            id={active ? "white" : "gray"}
+            onMouseEnter={handleEnterGear}
+          ></div>
+          <div
+            className="settings-menu"
+            onMouseLeave={handleMouseLeaveSettings}
+            style={{ visibility: active ? "visible" : "hidden" }}
+          >
+            <div className="settings">
+              <div className="settings-title">
+                <h2 style={{ margin: 0 }}>Settings</h2>
+
+                <div className="view-distance">
+                  <input
+                    type="checkbox"
+                    value={checked}
+                    onClick={handleViewDistance}
+                    id="view-distance"
+                  />
+                  <label>Show Distances</label>
+                </div>
+              </div>
+
+              <hr />
+              <div className="slider">
+                <label for="slider">
+                  <span style={{ fontSize: 20 }}>Rows: </span>
+                  {numberOfRows}
+                </label>
+                <input
+                  onChange={handleChange}
+                  type="range"
+                  value={numberOfRows}
+                  id="slider"
+                  min="5"
+                  max="20"
+                ></input>
+              </div>
+              <hr />
+              <div className="speed">
+                <label for="speed">
+                  <span style={{ fontSize: 20 }}>Speed: </span>
+                  {speed}ms
+                </label>
+                <input
+                  onChange={handleChangeSpeed}
+                  type="range"
+                  value={speed}
+                  id="speed"
+                  name="speed"
+                  min="10"
+                  max="300"
+                ></input>
+              </div>
+            </div>
           </div>
         </div>
         <div className="distance">
