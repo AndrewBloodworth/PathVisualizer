@@ -99,7 +99,7 @@ p {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  cursor: pointer;
+  cursor: default;
   width: 100%;
 }
 .settings-detail {

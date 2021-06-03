@@ -17,13 +17,13 @@ export const Nav = ({ numberOfRows, setNumberOfRows }) => {
     board.solved = false;
     board.clearBoard(true);
   };
-  const handleMouseLeave = () => {
+  const handleMouseEnter = () => {
     try {
       board.dom.setAnimations("on");
     } catch (error) {}
   };
   return (
-    <div className="nav" id="nav" onMouseLeave={handleMouseLeave}>
+    <div className="nav" id="nav" onMouseEnter={handleMouseEnter}>
       <div className="nav-title">
         <h1>Path Visualizer</h1>
       </div>

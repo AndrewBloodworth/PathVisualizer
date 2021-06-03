@@ -29,9 +29,10 @@ export const Settings = ({ numberOfRows, setNumberOfRows }) => {
   const handleMouseLeaveSettings = () => {
     setActive(false);
   };
-  const handleClick = () => {
-    console.log("her");
-    setActive(active ? false : true);
+  const handleClick = ({ target }) => {
+    console.log("ID", target.type);
+    if (target.type !== "range" && target.type !== "checkbox")
+      setActive(active ? false : true);
   };
   let settingsMenu = (
     <div
@@ -45,7 +46,7 @@ export const Settings = ({ numberOfRows, setNumberOfRows }) => {
         </div>
 
         <hr />
-        <div className="slider">
+        <div className="slider" id="setting">
           <label for="slider">
             <span style={{ fontSize: 20 }}>Rows: </span>
           </label>
@@ -59,7 +60,7 @@ export const Settings = ({ numberOfRows, setNumberOfRows }) => {
           ></input>
         </div>
         <hr />
-        <div className="speed">
+        <div className="speed" id="setting">
           <label for="speed">
             <span style={{ fontSize: 20 }}>Speed: </span>
           </label>
@@ -74,7 +75,7 @@ export const Settings = ({ numberOfRows, setNumberOfRows }) => {
           ></input>
         </div>
         <hr />
-        <div className="view-distance">
+        <div className="view-distance" id="setting">
           <label>
             <span style={{ fontSize: 20 }}>Distances: </span>
           </label>
