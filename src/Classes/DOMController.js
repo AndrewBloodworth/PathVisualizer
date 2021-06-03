@@ -10,7 +10,6 @@ export class DOMController {
   }
   disableInteraction(disable) {
     this.disabled = disable;
-    console.log(this.disabled);
     //Disable Grid Table
     const cssRoot = document.querySelector(":root");
     if (disable) {
@@ -73,6 +72,11 @@ export class DOMController {
   }
   updatePathDistance(distance) {
     document.getElementById("distance").innerHTML = distance;
+  }
+  updateAlgoButton(title) {
+    document.getElementById(
+      "algo-button"
+    ).innerHTML = `<strong>${title}</strong>`;
   }
   noPathFound(id) {
     if (!this.board.isNode(id)) {

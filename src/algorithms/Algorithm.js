@@ -101,6 +101,7 @@ export class Algorithm {
     return () => {
       this.board.dom.disableInteraction(false);
       this.board.dom.updatePathDistance(distance);
+      this.board.dom.updateAlgoButton(distance === Infinity ? "Run" : "Auto");
       return {
         distance,
         path,

@@ -9,6 +9,7 @@ export const Nav = ({ numberOfRows, setNumberOfRows }) => {
   const handleClick = async () => {
     board.dom.setAnimations("on");
     board.dom.updatePathDistance("Searching...");
+    board.dom.updateAlgoButton("Running");
     board.solved = false;
     board.runAlgorithm();
   };
