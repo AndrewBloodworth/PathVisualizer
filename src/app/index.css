@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;800&display=swap");
 :root {
-  --size: 50px;
+  --horz-size: 50px;
+  --vert-size: 50px;
   --grid-interact: auto;
   --nav-height: 75px;
   --node-cursor: grab;
@@ -276,7 +277,7 @@ hr {
   }
 
   input[type="range"]::-webkit-slider-runnable-track {
-    height: 10px;
+    height: 20px;
     width: 300px;
     -webkit-appearance: none;
     color: white;
@@ -284,9 +285,9 @@ hr {
   }
 
   input[type="range"]::-webkit-slider-thumb {
-    width: 10px;
+    width: 20px;
     -webkit-appearance: none;
-    height: 10px;
+    height: 20px;
     cursor: ew-resize;
     background: var(--nav-color);
     box-shadow: -300px 0 0 300px white;
@@ -323,7 +324,7 @@ input {
   border-collapse: collapse;
   border-spacing: 0;
   pointer-events: var(--grid-interact);
-  box-shadow: 0px 0px var(--size) rgba(0, 0, 0, 0.363);
+  box-shadow: 0px 0px var(--vert-size) rgba(0, 0, 0, 0.363);
 }
 
 .unvisited {
@@ -336,8 +337,8 @@ input {
 
 td {
   border: 1px solid lightblue;
-  height: var(--size);
-  width: var(--size);
+  height: var(--vert-size);
+  width: var(--horz-size);
 }
 .specs {
   color: rgb(13, 13, 39);
@@ -401,12 +402,11 @@ td {
 }
 
 .start-node {
-  border-radius: var(--size);
+  /*border-radius: var(--size);*/
   cursor: var(--node-cursor);
   background-image: url("./Images/arrow-icon--myiconfinder-23.png");
 
   background-size: contain;
-
   animation-name: startNodeAnimation;
   animation-duration: calc(var(--toggle) * var(--animation-speed));
   animation-play-state: var(--playState);

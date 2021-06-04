@@ -14,8 +14,13 @@ export const Grid = ({ numberOfRows }) => {
     const board = new Board();
     board.manufactureGrid();
     board.dom.assignGraphOfSize(numberOfRows);
+    //window.addEventListener("resize", board.dom.onResize(numberOfRows));
     dispatch(setBoard(board));
+    return () => {
+      //window.removeEventListener("resize", board.dom.onResize);
+    };
   }, [dispatch]);
+  //
   const handleMouseLeave = (e) => {
     setNode({ ...node, currentlyMoving: false });
     setMouseDown(false);

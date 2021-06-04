@@ -4,9 +4,11 @@ export class DOMController {
     this.disabled = false;
   }
   assignGraphOfSize(numberOfRows) {
-    const { verticalPixelCount } = this.board.getDimensions(numberOfRows);
+    const { verticalPixelCount, horizontalPixelCount } =
+      this.board.getDimensions(numberOfRows);
     const cssRoot = document.querySelector(":root");
-    cssRoot.style.setProperty("--size", `${verticalPixelCount}px`);
+    cssRoot.style.setProperty("--vert-size", `${verticalPixelCount}px`);
+    cssRoot.style.setProperty("--horz-size", `${horizontalPixelCount}px`);
   }
   disableInteraction(disable) {
     this.disabled = disable;

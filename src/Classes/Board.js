@@ -174,10 +174,14 @@ export class Board {
   }
   getDimensions(numberOfRows) {
     const navHeight = 75;
-    const boarderPixelCount = 3;
+    const verticalBorderPixelCount = 4;
+    const horizontalBorderPixelCount = 5;
+
     const conceptualPixelCount =
       (window.innerHeight - navHeight) / numberOfRows;
-    const verticalPixelCount = conceptualPixelCount - boarderPixelCount;
+    const verticalPixelCount = conceptualPixelCount - verticalBorderPixelCount;
+    const horizontalPixelCount =
+      conceptualPixelCount - horizontalBorderPixelCount;
     const numberOfColumns = window.innerWidth / conceptualPixelCount;
     const innerHeight = Number(numberOfRows);
     let innerWidth = Math.floor(numberOfColumns) - 1;
@@ -188,6 +192,7 @@ export class Board {
 
     return {
       verticalPixelCount,
+      horizontalPixelCount,
       innerHeight,
       offsetHeight,
       innerWidth,
